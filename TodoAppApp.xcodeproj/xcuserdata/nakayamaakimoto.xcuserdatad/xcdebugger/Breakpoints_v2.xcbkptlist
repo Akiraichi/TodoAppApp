@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TodoAppApp/ViewController.swift"
-            timestampString = "550070604.384298"
+            timestampString = "550134610.22246"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
             landmarkName = "ViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TodoAppApp/ViewController.swift"
-            timestampString = "550070604.384443"
+            timestampString = "550134610.2231129"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
             landmarkName = "okTButtonTaped(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -41,170 +41,14 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TodoAppApp/TodoTableViewCell.swift"
-            timestampString = "550070604.384517"
+            filePath = "TodoAppApp/ViewController.swift"
+            timestampString = "550134610.223509"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "14"
-            endingLineNumber = "14"
-            landmarkName = "TodoTableViewCell"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "TodoAppApp.TodoTableViewCell.todoTextCell.getter : weak Swift.ImplicitlyUnwrappedOptional&lt;__ObjC.UILabel&gt;"
-                  moduleName = "TodoAppApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nakayamaakimoto/Desktop/test/TodoAppApp/TodoAppApp/TodoTableViewCell.swift"
-                  timestampString = "550069993.459857"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "13"
-                  endingLineNumber = "13"
-                  offsetFromSymbolStart = "79">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "TodoAppApp.TodoTableViewCell.todoTextCell.setter : weak Swift.ImplicitlyUnwrappedOptional&lt;__ObjC.UILabel&gt;"
-                  moduleName = "TodoAppApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nakayamaakimoto/Desktop/test/TodoAppApp/TodoAppApp/TodoTableViewCell.swift"
-                  timestampString = "550069993.462057"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "13"
-                  endingLineNumber = "13"
-                  offsetFromSymbolStart = "90">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "TodoAppApp.TodoTableViewCell.init(style: __C.UITableViewCellStyle, reuseIdentifier: Swift.Optional&lt;Swift.String&gt;) -&gt; TodoAppApp.TodoTableViewCell"
-                  moduleName = "TodoAppApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nakayamaakimoto/Desktop/test/TodoAppApp/TodoAppApp/TodoTableViewCell.swift"
-                  timestampString = "550069993.465875"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "13"
-                  endingLineNumber = "13"
-                  offsetFromSymbolStart = "88">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "TodoAppApp.TodoTableViewCell.init(coder: __ObjC.NSCoder) -&gt; Swift.Optional&lt;TodoAppApp.TodoTableViewCell&gt;"
-                  moduleName = "TodoAppApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nakayamaakimoto/Desktop/test/TodoAppApp/TodoAppApp/TodoTableViewCell.swift"
-                  timestampString = "550069993.4704649"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "13"
-                  endingLineNumber = "13"
-                  offsetFromSymbolStart = "54">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TodoAppApp/TodoTableViewCell.swift"
-            timestampString = "550070604.3850549"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "16"
-            endingLineNumber = "16"
-            landmarkName = "awakeFromNib()"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TodoAppApp/TodoTableViewCell.swift"
-            timestampString = "550070604.385402"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "10"
-            endingLineNumber = "10"
-            landmarkName = "unknown"
-            landmarkType = "0">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "TodoAppApp.TodoTableViewCell.todoTextCell.getter : weak Swift.ImplicitlyUnwrappedOptional&lt;__ObjC.UILabel&gt;"
-                  moduleName = "TodoAppApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nakayamaakimoto/Desktop/test/TodoAppApp/TodoAppApp/TodoTableViewCell.swift"
-                  timestampString = "550069999.294885"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "13"
-                  endingLineNumber = "13"
-                  offsetFromSymbolStart = "79">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "TodoAppApp.TodoTableViewCell.todoTextCell.setter : weak Swift.ImplicitlyUnwrappedOptional&lt;__ObjC.UILabel&gt;"
-                  moduleName = "TodoAppApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nakayamaakimoto/Desktop/test/TodoAppApp/TodoAppApp/TodoTableViewCell.swift"
-                  timestampString = "550069999.2983691"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "13"
-                  endingLineNumber = "13"
-                  offsetFromSymbolStart = "90">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "TodoAppApp.TodoTableViewCell.init(style: __C.UITableViewCellStyle, reuseIdentifier: Swift.Optional&lt;Swift.String&gt;) -&gt; TodoAppApp.TodoTableViewCell"
-                  moduleName = "TodoAppApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nakayamaakimoto/Desktop/test/TodoAppApp/TodoAppApp/TodoTableViewCell.swift"
-                  timestampString = "550069999.30161"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "13"
-                  endingLineNumber = "13"
-                  offsetFromSymbolStart = "88">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "TodoAppApp.TodoTableViewCell.init(coder: __ObjC.NSCoder) -&gt; Swift.Optional&lt;TodoAppApp.TodoTableViewCell&gt;"
-                  moduleName = "TodoAppApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nakayamaakimoto/Desktop/test/TodoAppApp/TodoAppApp/TodoTableViewCell.swift"
-                  timestampString = "550069999.303748"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "13"
-                  endingLineNumber = "13"
-                  offsetFromSymbolStart = "54">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

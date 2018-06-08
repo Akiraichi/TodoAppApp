@@ -13,15 +13,9 @@ import UIKit
 class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
     
     @IBOutlet weak var uiTableView: UITableView!
-    
-    
-    
-    var todoArray = [String]()
     @IBOutlet weak var todoText: UITextField!
     
-    //textField
-    
-    
+    var todoArray = [String]()
     
     let saveData = UserDefaults.standard
     
@@ -40,10 +34,12 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         self.uiTableView.reloadData()
     }
     
+    //viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         self.uiTableView.delegate=self
         self.uiTableView.dataSource=self
+       // self.uiTableView.transform = __CGAffineTransformMake(1, 0, 0, -1, 0, 0)
         
         //UDに保存されている値を取得
         if UserDefaults.standard.object(forKey: "TodoList") != nil {
@@ -54,11 +50,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
          tableView.register(UINib(nibName: "ListT", bundle: nil), forCellReuseIdentifier: "cell")
          */
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+   
     // MARK: - Table view data source
     //セクション数
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -72,16 +64,23 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         return todoArray.count
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let todoCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoTableViewCell
         //変数の中身を作る
-            todoCell.todoTextCell?.text = todoArray[indexPath.row]
-    
+        todoCell.todoTextCell?.text = todoArray[indexPath.row]
+        
+        //todoCell.transform = __CGAffineTransformMake(1, 0, 0, -1, 0, 0)
+        
         //戻り値の設定（表示する中身)
         return todoCell
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
 }
 
 
