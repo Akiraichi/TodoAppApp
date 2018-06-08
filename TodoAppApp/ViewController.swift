@@ -16,13 +16,15 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     @IBOutlet weak var todoText: UITextField!
     
     var todoArray = [String]()
-    
     let saveData = UserDefaults.standard
     
     /*@IBAction func checkView(_ sender: CheckBox) {
      print(sender.isChecked)
      }*/
     
+    @IBAction func checkBox(_ sender: CheckBox) {
+        print(sender.isChecked)
+    }
     //OKボタンをタップした時のメソッド
     @IBAction func okTButtonTaped(_ sender: Any) {
         //変数に入力内容を入れる
@@ -45,12 +47,14 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         if UserDefaults.standard.object(forKey: "TodoList") != nil {
             todoArray = UserDefaults.standard.object(forKey: "TodoList") as! [String]
         }
+        
+      
         /*
          //カスタムセルを別途nidなので作成した時に必要
          tableView.register(UINib(nibName: "ListT", bundle: nil), forCellReuseIdentifier: "cell")
          */
     }
-   
+    
     // MARK: - Table view data source
     //セクション数
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -65,7 +69,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let todoCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoTableViewCell
         //変数の中身を作る
         todoCell.todoTextCell?.text = todoArray[indexPath.row]

@@ -13,6 +13,9 @@
 		854DF19720C95A5A00F2E51C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 854DF19620C95A5A00F2E51C /* Assets.xcassets */; };
 		854DF19A20C95A5A00F2E51C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 854DF19820C95A5A00F2E51C /* LaunchScreen.storyboard */; };
 		854DF1A220C95B5100F2E51C /* TodoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854DF1A120C95B5100F2E51C /* TodoTableViewCell.swift */; };
+		856C964D20CA63FD006C601B /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856C964C20CA63FD006C601B /* CheckBox.swift */; };
+		856C965420CA8283006C601B /* ico_check_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 856C965220CA8283006C601B /* ico_check_on.png */; };
+		856C965520CA8283006C601B /* ico_check_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 856C965320CA8283006C601B /* ico_check_off.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		854DF19920C95A5A00F2E51C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		854DF19B20C95A5A00F2E51C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		854DF1A120C95B5100F2E51C /* TodoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTableViewCell.swift; sourceTree = "<group>"; };
+		856C964C20CA63FD006C601B /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
+		856C965220CA8283006C601B /* ico_check_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ico_check_on.png; sourceTree = "<group>"; };
+		856C965320CA8283006C601B /* ico_check_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ico_check_off.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +62,8 @@
 		854DF18E20C95A5800F2E51C /* TodoAppApp */ = {
 			isa = PBXGroup;
 			children = (
+				856C965320CA8283006C601B /* ico_check_off.png */,
+				856C965220CA8283006C601B /* ico_check_on.png */,
 				854DF18F20C95A5800F2E51C /* AppDelegate.swift */,
 				854DF19120C95A5800F2E51C /* ViewController.swift */,
 				854DF19320C95A5800F2E51C /* Main.storyboard */,
@@ -63,6 +71,7 @@
 				854DF19620C95A5A00F2E51C /* Assets.xcassets */,
 				854DF19820C95A5A00F2E51C /* LaunchScreen.storyboard */,
 				854DF19B20C95A5A00F2E51C /* Info.plist */,
+				856C964C20CA63FD006C601B /* CheckBox.swift */,
 			);
 			path = TodoAppApp;
 			sourceTree = "<group>";
@@ -128,6 +137,8 @@
 				854DF19A20C95A5A00F2E51C /* LaunchScreen.storyboard in Resources */,
 				854DF19720C95A5A00F2E51C /* Assets.xcassets in Resources */,
 				854DF19520C95A5800F2E51C /* Main.storyboard in Resources */,
+				856C965520CA8283006C601B /* ico_check_off.png in Resources */,
+				856C965420CA8283006C601B /* ico_check_on.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				856C964D20CA63FD006C601B /* CheckBox.swift in Sources */,
 				854DF1A220C95B5100F2E51C /* TodoTableViewCell.swift in Sources */,
 				854DF19220C95A5800F2E51C /* ViewController.swift in Sources */,
 				854DF19020C95A5800F2E51C /* AppDelegate.swift in Sources */,

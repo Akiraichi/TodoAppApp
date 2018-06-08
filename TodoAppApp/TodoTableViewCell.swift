@@ -12,6 +12,8 @@ class TodoTableViewCell: UITableViewCell {
 
     @IBOutlet weak var todoTextCell: UITextField!
     
+    @IBOutlet weak var checkBox: CheckBox!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
