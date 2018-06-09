@@ -15,6 +15,10 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     @IBOutlet weak var uiTableView: UITableView!
     @IBOutlet weak var todoText: UITextField!
    
+    //penguin_image
+    @IBOutlet weak var image: UIImageView!
+    
+    
     //tap操作のため
     @IBOutlet var singleRecognizer: UITapGestureRecognizer!
     
@@ -49,6 +53,34 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         super.viewDidLoad()
         self.uiTableView.delegate=self
         self.uiTableView.dataSource=self
+        
+        //イメージがフェードイン
+        image.alpha = 0.0
+        UIView.animate(withDuration: 2.0, delay: 1.0, options: [.curveEaseIn], animations: {
+            self.image.alpha = 1.0
+        }, completion: nil)
+        
+        //イメージがジャンプ
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseIn, .autoreverse, .repeat], animations: {
+            self.image.center.y += 100.0
+        }) { _ in
+            self.image.center.y -= 100.0
+        }
+        /*
+        UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0.0, options: .autoreverse, animations: {
+            self.image.center.y += 100.0
+            self.image.bounds.size.height += 30.0
+            self.image.bounds.size.width += 30.0
+        }) { _ in
+            self.image.center.y -= 100.0
+            self.image.bounds.size.height -= 30.0
+            self.image.bounds.size.width -= 30.0
+        }
+ */
+        
+        //imageを下に移動
+        let transScale = CGAffineTransform(translationX: 0, y: 400)
+        image.transform = transScale
         
         //notificationの登録
         let center = NotificationCenter.default
