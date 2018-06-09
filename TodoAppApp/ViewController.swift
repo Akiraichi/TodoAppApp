@@ -38,12 +38,27 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         UserDefaults.standard.set( todoArray, forKey: "TodoList" )
         self.uiTableView.reloadData()
     }
+    @objc func update(notification: NSNotification?){
+        print("notification_ON")
+    }
+    
+    
     
     //viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         self.uiTableView.delegate=self
         self.uiTableView.dataSource=self
+        
+        //notificationの登録
+        let center = NotificationCenter.default
+        center.addObserver(self,
+                           selector: #selector(self.update),
+                           name: Notification.Name.UIApplicationWillTerminate,
+                           object: nil)
+        
+        //cellの高さを自動調整
+        uiTableView.rowHeight = UITableViewAutomaticDimension
         
         //todoTextnoデリゲイトはself
         todoText.delegate=self
