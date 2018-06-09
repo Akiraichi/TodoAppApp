@@ -10,10 +10,13 @@ import UIKit
 
 
 
-class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
+class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate {
     
     @IBOutlet weak var uiTableView: UITableView!
     @IBOutlet weak var todoText: UITextField!
+   
+    //tap操作のため
+    @IBOutlet var singleRecognizer: UITapGestureRecognizer!
     
     var todoArray = [String]()
     let saveData = UserDefaults.standard
@@ -41,6 +44,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         super.viewDidLoad()
         self.uiTableView.delegate=self
         self.uiTableView.dataSource=self
+        
+        //todoTextnoデリゲイトはself
+        todoText.delegate=self
        // self.uiTableView.transform = __CGAffineTransformMake(1, 0, 0, -1, 0, 0)
         
         //UDに保存されている値を取得
@@ -77,6 +83,20 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         //戻り値の設定（表示する中身)
         return todoCell
+    }
+    
+    //singleタップ時のアクション
+    @IBAction func tapView(_ sender: UITapGestureRecognizer) {
+        //キーボードを閉じる。
+        view.endEditing(true)
+    }
+    
+    //???_ textFieldにしなかったらenterでキーボードが下がらない＝メソッドが呼び出されなかった。なぜ？
+    //Returnキー押下時の呼び出しメソッド
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        //キーボードを閉じる。
+        view.endEditing(true)
+        return false
     }
     
     //左スワイプで削除機能

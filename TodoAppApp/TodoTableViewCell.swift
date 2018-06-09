@@ -14,10 +14,11 @@ class TodoTableViewCell: UITableViewCell {
     @IBOutlet weak var checkBox: CheckBox!
     var strikeOn:Bool = false
     
+    
     @IBAction func checkBoxAct(_ sender: Any) {
         if !strikeOn{
             let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: todoTextCell.text!)
-            attributeString.addAttribute(NSAttributedStringKey.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
+        attributeString.addAttribute(NSAttributedStringKey.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
             self.todoTextCell.attributedText=attributeString
             
             //textcolorを変更する
@@ -37,9 +38,12 @@ class TodoTableViewCell: UITableViewCell {
     }
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         // Initialization code
     }
 
+   
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
