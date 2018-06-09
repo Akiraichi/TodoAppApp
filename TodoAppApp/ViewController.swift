@@ -79,74 +79,26 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         return todoCell
     }
     
+    //左スワイプで削除機能
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteButton: UITableViewRowAction = UITableViewRowAction(style: .normal, title: "削除") { (action, index) -> Void in
+            //todoArrayから削除
+            self.todoArray.remove(at: indexPath.row)
+            //UserDefaultsの更新
+            UserDefaults.standard.set(self.todoArray, forKey: "TodoList")
+            //見た目上のセルからも削除
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+        deleteButton.backgroundColor = UIColor.red
+        //UserDefaults.standard.removeObject(forKey: "TodoList")
+        return [deleteButton]
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    let statusBar = UIView(frame:CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.size.width, height: 20.0))
-    //statusBar.backgroundColor =
-    //ナビゲーションバーの色を変更する
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // ① ナビゲーションバーの背景色
-        self.navigationController?.navigationBar.barTintColor = UIColor(hex: "660000")
-        
-        // ② ナビゲーションバーのタイトルの色
-       // self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: whiteColor]
-        
-        // ③ ナビゲーションバー上のアイテムの色
-        //self.navigationController?.navigationBar.tintColor = redColor
-    }
- 
-    
 }
 
-
-
-/*
- // Override to support conditional editing of the table view.
- override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
- // Return false if you do not want the specified item to be editable.
- return true
- }
- */
-
-/*
- // Override to support editing the table view.
- override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
- if editingStyle == .delete {
- // Delete the row from the data source
- tableView.deleteRows(at: [indexPath], with: .fade)
- } else if editingStyle == .insert {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
- 
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
- // Return false if you do not want the item to be re-orderable.
- return true
- }
- */
-
-/*
- // MARK: - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
- // Get the new view controller using segue.destinationViewController.
- // Pass the selected object to the new view controller.
- }
- */
 
