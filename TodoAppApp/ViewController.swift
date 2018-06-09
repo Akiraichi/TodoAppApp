@@ -84,6 +84,23 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         // Dispose of any resources that can be recreated.
     }
     
+    let statusBar = UIView(frame:CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.size.width, height: 20.0))
+    //statusBar.backgroundColor =
+    //ナビゲーションバーの色を変更する
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // ① ナビゲーションバーの背景色
+        self.navigationController?.navigationBar.barTintColor = UIColor(hex: "660000")
+        
+        // ② ナビゲーションバーのタイトルの色
+       // self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: whiteColor]
+        
+        // ③ ナビゲーションバー上のアイテムの色
+        //self.navigationController?.navigationBar.tintColor = redColor
+    }
+ 
+    
 }
 
 
