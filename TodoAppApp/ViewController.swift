@@ -33,8 +33,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     //OKボタンをタップした時のメソッド
     @IBAction func okTButtonTaped(_ sender: Any) {
-        //変数に入力内容を入れる
-        todoArray.append(todoText.text!)
+        //入力内容を配列の先頭に入れる→新しいリストが先頭のセルに出る
+        todoArray.insert(todoText.text!, at: 0)
         //追加ボタンを押したらフィールドを空にする
         todoText.text = ""
         //変数の中身をUDに追加
