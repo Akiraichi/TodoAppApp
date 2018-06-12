@@ -42,7 +42,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //UDの値を明示的に同期
         userDefaults.synchronize()
         //tableを再生成して、表示を更新
-        self.uiTableView.reloadData()
+        self.uiTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
     }
     
     //通知処理。ただし書きかけ
