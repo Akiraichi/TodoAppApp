@@ -41,6 +41,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         userDefaults.set( todoArray, forKey: "TodoList" )
         //UDの値を明示的に同期
         userDefaults.synchronize()
+        //tableを再生成して、表示を更新
         self.uiTableView.reloadData()
     }
     
