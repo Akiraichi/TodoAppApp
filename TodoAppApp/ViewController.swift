@@ -23,7 +23,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     //空の辞書を作成
     var todoArray = [String]()
-    let saveData = UserDefaults.standard
+    //UserDefaultsの参照。インスタンスの作成
+    let userDefaults = UserDefaults.standard
     
     //checkBoxタップ時の動作
     @IBAction func checkBox(_ sender: CheckBox) {
@@ -37,7 +38,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //追加ボタンを押したらフィールドを空にする
         todoText.text = ""
         //変数の中身をUDに追加
-        UserDefaults.standard.set( todoArray, forKey: "TodoList" )
+        userDefaults.set( todoArray, forKey: "TodoList" )
+        //UDの値を明示的に同期
+        userDefaults.synchronize()
         self.uiTableView.reloadData()
     }
     
@@ -67,17 +70,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         }) { _ in
             self.image.center.y -= 100.0
         }
-        /*
-        UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0.0, options: .autoreverse, animations: {
-            self.image.center.y += 100.0
-            self.image.bounds.size.height += 30.0
-            self.image.bounds.size.width += 30.0
-        }) { _ in
-            self.image.center.y -= 100.0
-            self.image.bounds.size.height -= 30.0
-            self.image.bounds.size.width -= 30.0
-        }
- */
         
         //imageを下に移動
         let transScale = CGAffineTransform(translationX: 0, y: 400)
@@ -98,15 +90,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
        // self.uiTableView.transform = __CGAffineTransformMake(1, 0, 0, -1, 0, 0)
         
         //UDに保存されている値を取得。オプショナルバインディングで書き換えてみた。
-        if let tmp = UserDefaults.standard.object(forKey: "TodoList") {
-            todoArray = tmp as! [String]
+        if let str = UserDefaults.standard.object(forKey: "TodoList") {
+            todoArray = str as! [String]    //Any型なのでString型にダウンキャスト
         }
-        
-      
-        /*
-         //カスタムセルを別途nidなので作成した時に必要
-         tableView.register(UINib(nibName: "ListT", bundle: nil), forCellReuseIdentifier: "cell")
-         */
     }
     
     // MARK: - Table view data source
@@ -147,13 +133,13 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         return false
     }
     
-    //左スワイプで削除機能
+    //左スワイプによる削除機能
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteButton: UITableViewRowAction = UITableViewRowAction(style: .normal, title: "削除") { (action, index) -> Void in
             //todoArrayから削除
             self.todoArray.remove(at: indexPath.row)
-            //UserDefaultsの更新
-            UserDefaults.standard.set(self.todoArray, forKey: "TodoList")
+            //userDefaultsの更新
+            self.userDefaults.set(self.todoArray, forKey: "TodoList")
             //見た目上のセルからも削除
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
