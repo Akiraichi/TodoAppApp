@@ -18,20 +18,18 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     //penguin_image
     @IBOutlet weak var image: UIImageView!
     
-    
     //tap操作のため
     @IBOutlet var singleRecognizer: UITapGestureRecognizer!
     
+    //空の辞書を作成
     var todoArray = [String]()
     let saveData = UserDefaults.standard
     
-    /*@IBAction func checkView(_ sender: CheckBox) {
-     print(sender.isChecked)
-     }*/
-    
+    //checkBoxタップ時の動作
     @IBAction func checkBox(_ sender: CheckBox) {
         print(sender.isChecked)
     }
+    
     //OKボタンをタップした時のメソッド
     @IBAction func okTButtonTaped(_ sender: Any) {
         //変数に入力内容を入れる
@@ -42,15 +40,18 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         UserDefaults.standard.set( todoArray, forKey: "TodoList" )
         self.uiTableView.reloadData()
     }
+    
+    //通知処理。ただし書きかけ
     @objc func update(notification: NSNotification?){
         print("notification_ON")
     }
     
-    
-    
     //viewDidLoad
     override func viewDidLoad() {
+        
+        //オーバーライド前の本来の処理を実行
         super.viewDidLoad()
+        
         self.uiTableView.delegate=self
         self.uiTableView.dataSource=self
         
@@ -96,9 +97,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         todoText.delegate=self
        // self.uiTableView.transform = __CGAffineTransformMake(1, 0, 0, -1, 0, 0)
         
-        //UDに保存されている値を取得
-        if UserDefaults.standard.object(forKey: "TodoList") != nil {
-            todoArray = UserDefaults.standard.object(forKey: "TodoList") as! [String]
+        //UDに保存されている値を取得。オプショナルバインディングで書き換えてみた。
+        if let tmp = UserDefaults.standard.object(forKey: "TodoList") {
+            todoArray = tmp as! [String]
         }
         
       
