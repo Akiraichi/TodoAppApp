@@ -15,6 +15,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     @IBOutlet weak var uiTableView: UITableView!
     @IBOutlet weak var todoText: UITextField!
    
+    
     //penguin_image
     @IBOutlet weak var image: UIImageView!
     
@@ -43,6 +44,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         userDefaults.synchronize()
         //tableを再生成して、表示を更新
         self.uiTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.fade)
+        //キーボード閉じる
+        view.endEditing(true)
+        
     }
     
     //通知処理。ただし書きかけ
