@@ -26,6 +26,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     var todoArray = [String]()
     //UserDefaultsの参照。インスタンスの作成
     let userDefaults = UserDefaults.standard
+    //UserDEfaultsのキー
+    var userDefaultsKey: String = ""
     
     //checkBoxタップ時の動作
     @IBAction func checkBox(_ sender: CheckBox) {
@@ -39,7 +41,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //追加ボタンを押したらフィールドを空にする
         todoText.text = ""
         //変数の中身をUDに追加
-        userDefaults.set( todoArray, forKey: "TodoList" )
+        userDefaults.set( todoArray, forKey: userDefaultsKey )
         //UDの値を明示的に同期
         userDefaults.synchronize()
         //tableを再生成して、表示を更新
@@ -92,10 +94,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         //todoTextnoデリゲイトはself
         todoText.delegate=self
-       // self.uiTableView.transform = __CGAffineTransformMake(1, 0, 0, -1, 0, 0)
         
         //UDに保存されている値を取得。オプショナルバインディングで書き換えてみた。
-        if let str = UserDefaults.standard.object(forKey: "TodoList") {
+        if let str = UserDefaults.standard.object(forKey: userDefaultsKey) {
             todoArray = str as! [String]    //Any型なのでString型にダウンキャスト
         }
     }
@@ -117,8 +118,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         let todoCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoTableViewCell
         //変数の中身を作る
         todoCell.todoTextCell?.text = todoArray[indexPath.row]
-        
-        //todoCell.transform = __CGAffineTransformMake(1, 0, 0, -1, 0, 0)
         
         //戻り値の設定（表示する中身)
         return todoCell
@@ -144,7 +143,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             //todoArrayから削除
             self.todoArray.remove(at: indexPath.row)
             //userDefaultsの更新
-            self.userDefaults.set(self.todoArray, forKey: "TodoList")
+            self.userDefaults.set(self.todoArray, forKey: self.userDefaultsKey)
             //見た目上のセルからも削除
             tableView.deleteRows(at: [indexPath], with: .fade)
         }

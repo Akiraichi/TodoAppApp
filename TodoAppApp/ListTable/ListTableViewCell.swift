@@ -10,7 +10,7 @@ import UIKit
 
 class ListTableViewCell: UITableViewCell {
 
-    
+    var listName:String = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()

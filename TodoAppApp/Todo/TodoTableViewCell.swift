@@ -36,6 +36,14 @@ class TodoTableViewCell: UITableViewCell {
             strikeOn=false
         }
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        //元々入っているセルの情報をリセット
+        todoTextCell=nil
+        strikeOn=false
+    }
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

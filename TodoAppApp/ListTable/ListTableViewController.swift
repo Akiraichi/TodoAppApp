@@ -33,6 +33,15 @@ class ListTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    //リストセルをタップしてTodoリストへ遷移する前の処理
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let cell = sender as? ListTableViewCell{
+            if let viewController = segue.destination as? ViewController{
+                viewController.userDefaultsKey = cell.listName
+            }
+        }
+    }
+    
     // +ボタンをタップしたときに呼ばれる処理
     @IBAction func tapAddButton(_ sender: Any) {
         // アラートダイアログを生成
@@ -58,12 +67,6 @@ class ListTableViewController: UITableViewController {
                 let data = NSKeyedArchiver.archivedData(withRootObject: self.listName)
                 userDefaults.set(data, forKey: "list")
                 userDefaults.synchronize()
-                
-                //新しいビューを作成
-                let storyboard = UIStoryboard(name: "todo", bundle: nil)
-                let mainVC = storyboard.instantiateViewController(withIdentifier: "todo") as! ViewController
-                self.present(mainVC, animated: true, completion: nil)
-                
             }
         }
         
@@ -93,12 +96,15 @@ class ListTableViewController: UITableViewController {
 
     // テーブルの行ごとのセルを返却する
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath) as? ListTableViewCell else{
+            return ListTableViewCell()
+        }
 
         // 行番号に合ったToDoの情報を取得
         let myTodo = listName[indexPath.row]
         // セルのラベルにToDoのタイトルをセット
         cell.textLabel?.text = myTodo.listTitle
+        cell.listName = myTodo.listTitle!
         // セルのチェックマーク状態をセット
         if myTodo.todoDone {
             // チェックあり
@@ -113,18 +119,14 @@ class ListTableViewController: UITableViewController {
     // セルをタップした時の処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let myTodo = listName[indexPath.row]
-//        if myTodo.todoDone {
-//            // 完了済みの場合は未完了に変更
-//            myTodo.todoDone = false
-//        } else {
-//            // 未完の場合は完了済みに変更
-//            myTodo.todoDone = true
-//        }
-        
-        //todoリストに移動
-        
-        
-        
+        if myTodo.todoDone {
+            // 完了済みの場合は未完了に変更
+            myTodo.todoDone = false
+        } else {
+            // 未完の場合は完了済みに変更
+            myTodo.todoDone = true
+        }
+       
         // セルの状態を変更
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         // データ保存。Data型にシリアライズする
