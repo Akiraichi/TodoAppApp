@@ -27,7 +27,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="5Cv-Jf-4lD"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="Alh-QD-rYg"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -149,6 +149,7 @@
         <!--Navigation Controller-->
         <scene sceneID="nTz-8f-eyU">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jtx-Cp-Njz" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" hidesBarsOnSwipe="YES" id="aPQ-QK-mJP" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9Ik-yE-qvM">
@@ -160,7 +161,6 @@
                         <segue destination="EK4-zB-W19" kind="relationship" relationship="rootViewController" id="AsW-sE-lcN"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jtx-Cp-Njz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="63.200000000000003" y="119.1904047976012"/>
         </scene>

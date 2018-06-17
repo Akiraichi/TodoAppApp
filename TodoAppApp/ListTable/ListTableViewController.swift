@@ -19,7 +19,7 @@ class ListTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //// 保存しているToDoの読み込み処理
         let userDefaults = UserDefaults.standard
         if let storedTodoList = userDefaults.object(forKey: "list") as? Data {
@@ -40,7 +40,11 @@ class ListTableViewController: UITableViewController {
             if let viewController = segue.destination as? ViewController{
                 viewController.userDefaultsKey = cell.listName
             }
+            //遷移先のbarBottunのテキストをリスト名に変更
+            let backButtonItem = UIBarButtonItem(title: cell.listName, style: .plain, target: nil, action: nil)
+            navigationItem.backBarButtonItem = backButtonItem
         }
+        
     }
     
     // +ボタンをタップしたときに呼ばれる処理

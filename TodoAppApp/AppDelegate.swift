@@ -15,6 +15,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        //ナビゲーションバーの＜を消す
+        UINavigationBar.appearance().backIndicatorImage = UIImage()
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage()
+        //Nvigationバーのテキストカラーを白色に変更
+        UINavigationBar.appearance().tintColor = UIColor.white
+        //ナビゲーションバーの背景を変更
+        UINavigationBar.appearance().barTintColor = UIColor(hex: "681013")
+        
         // Override point for customization after application launch.
         return true
     }
