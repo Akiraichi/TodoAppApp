@@ -12,6 +12,7 @@ class ListTableViewController: UITableViewController {
     
     // ToDoを格納した配列
     var listName = [MyList]()
+    let userDefaults = UserDefaults.standard
     
     @IBOutlet weak var listTableView: UITableView!
 
@@ -150,12 +151,16 @@ class ListTableViewController: UITableViewController {
             listName.remove(at: indexPath.row)
             // セルを削除
             tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+            
             // データ保存。Data型にシリアライズする
             let data: Data = NSKeyedArchiver.archivedData(withRootObject: listName)
             // UserDefautlsに保存
             let userDefaults = UserDefaults.standard
             userDefaults.set(data, forKey: "list")
             userDefaults.synchronize()
+            
+            //UserDefaultsからリストを削除
+            
         }
     }
 }
