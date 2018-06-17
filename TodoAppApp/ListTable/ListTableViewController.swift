@@ -110,27 +110,27 @@ class ListTableViewController: UITableViewController {
         // セルのラベルにToDoのタイトルをセット
         cell.textLabel?.text = myTodo.listTitle
         cell.listName = myTodo.listTitle!
-        // セルのチェックマーク状態をセット
-        if myTodo.todoDone {
-            // チェックあり
-            cell.accessoryType = UITableViewCellAccessoryType.checkmark
-        } else {
-            // チェックなし
-            cell.accessoryType = UITableViewCellAccessoryType.none
-        }
+//        // セルのチェックマーク状態をセット
+//        if myTodo.todoDone {
+//            // チェックあり
+//            cell.accessoryType = UITableViewCellAccessoryType.checkmark
+//        } else {
+//            // チェックなし
+//            cell.accessoryType = UITableViewCellAccessoryType.none
+//        }
         return cell
     }
     
     // セルをタップした時の処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let myTodo = listName[indexPath.row]
-        if myTodo.todoDone {
-            // 完了済みの場合は未完了に変更
-            myTodo.todoDone = false
-        } else {
-            // 未完の場合は完了済みに変更
-            myTodo.todoDone = true
-        }
+//        if myTodo.todoDone {
+//            // 完了済みの場合は未完了に変更
+//            myTodo.todoDone = false
+//        } else {
+//            // 未完の場合は完了済みに変更
+//            myTodo.todoDone = true
+//        }
        
         // セルの状態を変更
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
@@ -172,8 +172,8 @@ class ListTableViewController: UITableViewController {
     class MyList: NSObject, NSCoding {
         // ToDoのタイトル
         var listTitle: String?
-        // ToDoを完了したかどうかを表すフラグ
-        var todoDone: Bool = false
+//        // ToDoを完了したかどうかを表すフラグ
+//        var todoDone: Bool = false
         // コンストラクタ
         override init() {
             
@@ -182,12 +182,12 @@ class ListTableViewController: UITableViewController {
         // NSCodingプロトコルに宣言されているデシリアライズ処理。デコード処理とも呼ばれる
         required init?(coder aDecoder: NSCoder) {
             listTitle = aDecoder.decodeObject(forKey: "listTitle") as? String
-            todoDone = aDecoder.decodeBool(forKey: "todoDone")
+//            todoDone = aDecoder.decodeBool(forKey: "todoDone")
         }
         
         // NSCodingプロトコルに宣言されているシリアライズ処理。エンコード処理とも呼ばれる
         func encode(with aCoder: NSCoder) {
             aCoder.encode(listTitle, forKey: "listTitle")
-            aCoder.encode(todoDone, forKey: "todoDone")
+//            aCoder.encode(todoDone, forKey: "todoDone")
         }
 }
