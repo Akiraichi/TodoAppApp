@@ -162,12 +162,22 @@ class ListTableViewController: UITableViewController {
         userDefaults.synchronize()
     }
     
-    //テーブルの編集形式をデリートに設定
+    //セルの移動を許可
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool{
+       //セルは移動可能
+        return true
+    }
+    // テーブルのセルを移動
+    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath)
+    {
+        print("\(fromIndexPath.row)番地から\(to.row)番地に移動しました")
+    }
+    //テーブルの編集形式を設定
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         if tableView.isEditing {
             return UITableViewCellEditingStyle.delete
         }else{
-        return UITableViewCellEditingStyle.insert
+        return UITableViewCellEditingStyle.none
         }
     }
     
