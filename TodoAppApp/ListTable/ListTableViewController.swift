@@ -14,6 +14,7 @@ class ListTableViewController: UITableViewController {
     var listName = [MyList]()
     let userDefaults = UserDefaults.standard
     
+    var editButton :UIBarButtonItem?
     @IBOutlet weak var listTableView: UITableView!
 
     
@@ -27,8 +28,27 @@ class ListTableViewController: UITableViewController {
                 listName.append(contentsOf: unarchiveTodlList)
             }
         }
+        
+        // ナビゲーションアイテムの右側に編集ボタンを設置
+        editButton = UIBarButtonItem(title: "編集", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ListTableViewController.selToEdit(_:)))
+        self.navigationItem.leftBarButtonItem = editButton
+        
     }
 
+    //テーブル全体の編集の可否を指定する
+    @objc func selToEdit(_ sender:Any){
+        if self.tableView.isEditing{
+            //編集可能なら編集不可にする
+            editButton?.title = "編集"
+            self.setEditing(false, animated: true)
+        }
+        else{
+            //編集不可なら可能にする
+            editButton?.title = "完了"
+            self.setEditing(true, animated: true)
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -142,10 +162,21 @@ class ListTableViewController: UITableViewController {
         userDefaults.synchronize()
     }
     
+    //テーブルの編集形式をデリートに設定
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        if tableView.isEditing {
+            return UITableViewCellEditingStyle.delete
+        }else{
+        return UITableViewCellEditingStyle.insert
+        }
+    }
+    
     // セルが編集可能であるかどうかを返却する
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
+    
+ 
     
     // セルを削除した時の処理
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
