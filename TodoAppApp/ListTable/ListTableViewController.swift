@@ -17,6 +17,7 @@ class ListTableViewController: UITableViewController {
     var editButton :UIBarButtonItem?
     @IBOutlet weak var listTableView: UITableView!
 
+    @IBOutlet weak var plusBarButtonItem: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,7 +64,7 @@ class ListTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     //リストセルをタップしてTodoリストへ遷移する前の処理
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let cell = sender as? ListTableViewCell{
@@ -177,13 +178,12 @@ class ListTableViewController: UITableViewController {
        //セルは移動可能
         return true
     }
+    
     // テーブルのセルを移動
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath)
     {
         print("\(fromIndexPath.row)番地から\(to.row)番地に移動しました")
     }
-    
-   
     
 //    //長押しで並べ替え
     @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
@@ -200,6 +200,17 @@ class ListTableViewController: UITableViewController {
         }
     }
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        // テーブルの編集中はバックボタンを表示しない
+        if editing{
+            plusBarButtonItem.isEnabled = false
+            plusBarButtonItem.tintColor = UIColor(white: 0, alpha: 0)
+        } else {
+            plusBarButtonItem.isEnabled = true
+            plusBarButtonItem.tintColor = UIColor(white: 1, alpha: 1)
+        }
+        super.setEditing(editing, animated: animated)
+    }
     
     //テーブルの編集形式を設定
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
@@ -215,7 +226,7 @@ class ListTableViewController: UITableViewController {
         return true
     }
     
- 
+    
     
     // セルを削除した時の処理
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
