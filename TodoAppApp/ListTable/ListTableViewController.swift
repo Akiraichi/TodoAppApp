@@ -28,7 +28,17 @@ class ListTableViewController: UITableViewController {
                 listName.append(contentsOf: unarchiveTodlList)
             }
         }
+   
+        //長押しジェスチャーの追加
+        let longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ListTableViewController.longPressHandler(_:)))
+        longPressGesture.minimumPressDuration = 0.5
+        longPressGesture.numberOfTapsRequired = 0
+        longPressGesture.numberOfTouchesRequired = 1
+        self.view.addGestureRecognizer(longPressGesture)
         
+       
+    
+            
         // ナビゲーションアイテムの右側に編集ボタンを設置
         editButton = UIBarButtonItem(title: "編集", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ListTableViewController.selToEdit(_:)))
         self.navigationItem.leftBarButtonItem = editButton
@@ -172,9 +182,28 @@ class ListTableViewController: UITableViewController {
     {
         print("\(fromIndexPath.row)番地から\(to.row)番地に移動しました")
     }
+    
+   
+    
+//    //長押しで並べ替え
+    @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
+        
+        switch sender.state {
+        case UIGestureRecognizerState.began:
+            self.setEditing(true, animated: true)
+            editButton?.title = "完了"
+
+        case UIGestureRecognizerState.ended:
+            break
+        default:
+            break
+        }
+    }
+    
+    
     //テーブルの編集形式を設定
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        if tableView.isEditing {
+        if tableView.isEditing  {
             return UITableViewCellEditingStyle.delete
         }else{
         return UITableViewCellEditingStyle.none
