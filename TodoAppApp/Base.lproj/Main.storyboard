@@ -38,7 +38,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="UxA-6M-Va8">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="mCd-Fx-4oL">
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="mCd-Fx-4oL">
                             <connections>
                                 <action selector="tapAddButton:" destination="EK4-zB-W19" id="qb2-q2-jMY"/>
                             </connections>

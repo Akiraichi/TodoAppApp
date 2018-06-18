@@ -41,7 +41,7 @@ class ListTableViewController: UITableViewController {
             
         // ナビゲーションアイテムの右側に編集ボタンを設置
         editButton = UIBarButtonItem(title: "編集", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ListTableViewController.selToEdit(_:)))
-        self.navigationItem.leftBarButtonItem = editButton
+        self.navigationItem.rightBarButtonItem = editButton
         
     }
 
