@@ -1,16 +1,16 @@
 PODS:
-  - SlideMenuControllerSwift (4.0.0)
+  - SwipeCellKit (2.4.2)
 
 DEPENDENCIES:
-  - SlideMenuControllerSwift
+  - SwipeCellKit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - SlideMenuControllerSwift
+    - SwipeCellKit
 
 SPEC CHECKSUMS:
-  SlideMenuControllerSwift: 021d6318201c53d4d4d3710517d43d6c556c7dd0
+  SwipeCellKit: a01c587d6786f514a44eed54261e24eaa9fb4de6
 
-PODFILE CHECKSUM: 347a894bfd4e4e2c0be54463ad6516315ac8b7b9
+PODFILE CHECKSUM: beb83c23109ec5eddd4f5ebbb7b3b0f19e30f2de
 
 COCOAPODS: 1.5.2
