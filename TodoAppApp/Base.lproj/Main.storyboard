@@ -14,20 +14,20 @@
         <scene sceneID="Eop-u7-z0s">
             <objects>
                 <tableViewController id="EK4-zB-W19" customClass="ListTableViewController" customModule="TodoAppApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="acX-nm-4Kd">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="acX-nm-4Kd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListCell" id="NXg-Ve-u3w" customClass="ListTableViewCell" customModule="TodoAppApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NXg-Ve-u3w" id="8Za-ZR-2nk">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="Alh-QD-rYg"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="RgF-uQ-GY8"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -65,36 +65,34 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cyan="0.018334582450000001" magenta="0.034442342819999999" yellow="0.05101843298" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" id="QFI-bf-bv4" customClass="TodoTableViewCell" customModule="TodoAppApp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="R8D-KQ-fyv" customClass="TodoTableViewCell" customModule="TodoAppApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QFI-bf-bv4" id="su8-Bd-VOL">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="R8D-KQ-fyv" id="bAf-8h-qd3">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sa4-KV-HqK" customClass="CheckBox" customModule="TodoAppApp" customModuleProvider="target">
-                                                    <rect key="frame" x="5" y="9" width="30" height="30"/>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iX5-FF-tra" customClass="CheckBox" customModule="TodoAppApp" customModuleProvider="target">
+                                                    <rect key="frame" x="24" y="9" width="46" height="41"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Button"/>
                                                     <connections>
-                                                        <action selector="checkBox:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Kiz-ML-ETp"/>
-                                                        <action selector="checkBoxAct:" destination="QFI-bf-bv4" eventType="touchUpInside" id="vOy-J0-wna"/>
+                                                        <action selector="checkBox:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ENr-JV-Eft"/>
+                                                        <action selector="checkBoxAct:" destination="R8D-KQ-fyv" eventType="touchUpInside" id="tap-7j-Kw0"/>
                                                     </connections>
                                                 </button>
-                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="FeP-qA-YtF">
-                                                    <rect key="frame" x="53" y="9" width="292" height="30"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6rb-eU-9hB">
+                                                    <rect key="frame" x="93" y="11" width="217" height="39"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" cyan="0.018334582450000001" magenta="0.034442342819999999" yellow="0.05101843298" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
                                                     <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" cyan="0.018334582450000001" magenta="0.034442342819999999" yellow="0.05101843298" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
                                         <connections>
-                                            <outlet property="checkBox" destination="sa4-KV-HqK" id="Gko-4P-MKZ"/>
-                                            <outlet property="todoTextCell" destination="FeP-qA-YtF" id="Xzf-C6-9tm"/>
+                                            <outlet property="checkBox" destination="iX5-FF-tra" id="Ufd-W7-dyy"/>
+                                            <outlet property="todoTextCell" destination="6rb-eU-9hB" id="bTo-DY-OFy"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

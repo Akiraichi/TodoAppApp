@@ -9,21 +9,20 @@
 import UIKit
 import SwipeCellKit
 
-
 class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate {
     
     @IBOutlet weak var uiTableView: UITableView!
+    //Todo入れるテキストフィールド
     @IBOutlet weak var todoText: UITextField!
    
-    ///////////////
-    var defaultOptions = SwipeOptions()
-    var isSwipeRightEnabled = true
-    var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
-    var buttonStyle: ButtonStyle = .backgroundColor
-    var usesTallCells = false
-    /////////////////////////////////
+    var defaultOptions = SwipeOptions() //右スワイプを許可する
     
-    //penguin_image
+    var isSwipeRightEnabled = true      //displayモードをimageモードにする
+    var buttonDisplayMode: ButtonDisplayMode = .imageOnly
+    var buttonStyle: ButtonStyle = .circular //imageButtonをcirculerにする
+    var usesTallCells = false   //cellの高さを通常にする
+    
+    //penguin_imageを入れるイメージビュー
     @IBOutlet weak var image: UIImageView!
     
     //tap操作のため
@@ -31,10 +30,49 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     //空の辞書を作成
     var todoArray = [String]()
-    //UserDefaultsの参照。インスタンスの作成
     let userDefaults = UserDefaults.standard
-    //UserDEfaultsのキー
+    //UDのキーを設定するための変数
     var userDefaultsKey: String = ""
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.uiTableView.delegate=self
+        self.uiTableView.dataSource=self
+        todoText.delegate=self  //todoTextnoデリゲイトはself
+        
+        //スワイプのための設定
+        uiTableView.allowsSelection = true
+        uiTableView.allowsMultipleSelectionDuringEditing = true
+        
+        //イメージがフェードイン
+        image.alpha = 0.0
+        UIView.animate(withDuration: 2.0, delay: 1.0, options: [.curveEaseIn], animations: {
+            self.image.alpha = 1.0
+        }, completion: nil)
+        //イメージがジャンプ
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseIn, .autoreverse, .repeat], animations: {
+            self.image.center.y += 100.0
+        }) { _ in
+            self.image.center.y -= 100.0
+        }
+        //imageを下に移動
+        let transScale = CGAffineTransform(translationX: 0, y: 400)
+        image.transform = transScale
+        
+        //notificationの登録
+        let center = NotificationCenter.default
+        center.addObserver(self,
+                           selector: #selector(self.update),
+                           name: Notification.Name.UIApplicationWillTerminate,
+                           object: nil)
+        
+        
+        
+        //UDに保存されている値を取得。オプショナルバインディングで書き換えてみた。
+        if let str = UserDefaults.standard.object(forKey: userDefaultsKey) {
+            todoArray = str as! [String]    //Any型なのでString型にダウンキャスト
+        }
+    }
     
     //checkBoxタップ時の動作
     @IBAction func checkBox(_ sender: CheckBox) {
@@ -55,7 +93,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         self.uiTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.fade)
         //キーボード閉じる
         view.endEditing(true)
-        
     }
     
     //通知処理。ただし書きかけ
@@ -63,65 +100,12 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         print("notification_ON")
     }
     
-    //viewDidLoad
-    override func viewDidLoad() {
-        
-        //オーバーライド前の本来の処理を実行
-        super.viewDidLoad()
-        
-        self.uiTableView.delegate=self
-        self.uiTableView.dataSource=self
-        
-        /////////////////////
-        uiTableView.allowsSelection = true
-        uiTableView.allowsMultipleSelectionDuringEditing = true
-        
-        //////////////////////////
-        
-        //イメージがフェードイン
-        image.alpha = 0.0
-        UIView.animate(withDuration: 2.0, delay: 1.0, options: [.curveEaseIn], animations: {
-            self.image.alpha = 1.0
-        }, completion: nil)
-        
-        //イメージがジャンプ
-        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseIn, .autoreverse, .repeat], animations: {
-            self.image.center.y += 100.0
-        }) { _ in
-            self.image.center.y -= 100.0
-        }
-        
-        //imageを下に移動
-        let transScale = CGAffineTransform(translationX: 0, y: 400)
-        image.transform = transScale
-        
-        //notificationの登録
-        let center = NotificationCenter.default
-        center.addObserver(self,
-                           selector: #selector(self.update),
-                           name: Notification.Name.UIApplicationWillTerminate,
-                           object: nil)
-        
-        //cellの高さを自動調整
-        uiTableView.rowHeight = UITableViewAutomaticDimension
-        
-        //todoTextnoデリゲイトはself
-        todoText.delegate=self
-        
-        //UDに保存されている値を取得。オプショナルバインディングで書き換えてみた。
-        if let str = UserDefaults.standard.object(forKey: userDefaultsKey) {
-            todoArray = str as! [String]    //Any型なのでString型にダウンキャスト
-        }
-    }
-    
     // MARK: - Table view data source
-    //セクション数
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
-    //セル数
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return todoArray.count
@@ -132,7 +116,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         todoCell.delegate = self
         todoCell.selectedBackgroundView = createSelectedBackgroundView()
-        
         
         //変数の中身を作る
         todoCell.todoTextCell?.text = todoArray[indexPath.row]
@@ -155,21 +138,21 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         return false
     }
     
-    //左スワイプによる削除機能
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteButton: UITableViewRowAction = UITableViewRowAction(style: .normal, title: "削除") { (action, index) -> Void in
-            //todoArrayから削除
-            self.todoArray.remove(at: indexPath.row)
-            //userDefaultsの更新
-            self.userDefaults.set(self.todoArray, forKey: self.userDefaultsKey)
-            //見た目上のセルからも削除
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        }
-        deleteButton.backgroundColor = UIColor.red
-        //UserDefaults.standard.removeObject(forKey: "TodoList")
-        return [deleteButton]
-        
-    }
+//    //左スワイプによる削除機能
+//    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+//        let deleteButton: UITableViewRowAction = UITableViewRowAction(style: .normal, title: "削除") { (action, index) -> Void in
+//            //todoArrayから削除
+//            self.todoArray.remove(at: indexPath.row)
+//            //userDefaultsの更新
+//            self.userDefaults.set(self.todoArray, forKey: self.userDefaultsKey)
+//            //見た目上のセルからも削除
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//        }
+//        deleteButton.backgroundColor = UIColor.red
+//        //UserDefaults.standard.removeObject(forKey: "TodoList")
+//        return [deleteButton]
+//
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -205,8 +188,12 @@ extension ViewController: SwipeTableViewCellDelegate {
             flag.hidesWhenSelected = true
             configure(action: flag, with: .flag)
             
-            let delete = SwipeAction(style: .destructive, title: nil) { action, indexPath in
-                
+            let delete = SwipeAction(style: .destructive, title: nil) { action, indexPath in (
+                //todoArrayから削除
+                self.todoArray.remove(at: indexPath.row),
+                //userDefaultsの更新
+                self.userDefaults.set(self.todoArray, forKey: self.userDefaultsKey)
+                )
             }
             configure(action: delete, with: .trash)
             
@@ -214,6 +201,8 @@ extension ViewController: SwipeTableViewCellDelegate {
             let closure: (UIAlertAction) -> Void = { _ in cell.hideSwipe(animated: true) }
             let more = SwipeAction(style: .default, title: nil) { action, indexPath in
                 let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                
+                
                 controller.addAction(UIAlertAction(title: "Reply", style: .default, handler: closure))
                 controller.addAction(UIAlertAction(title: "Forward", style: .default, handler: closure))
                 controller.addAction(UIAlertAction(title: "Mark...", style: .default, handler: closure))
@@ -233,11 +222,16 @@ extension ViewController: SwipeTableViewCellDelegate {
         options.expansionStyle = orientation == .left ? .selection : .destructive
         options.transitionStyle = defaultOptions.transitionStyle
         
+        //イメージの最大幅を設定
+        
+        
+        
+        
         switch buttonStyle {
         case .backgroundColor:
             options.buttonSpacing = 11
         case .circular:
-            options.buttonSpacing = 4
+            options.buttonSpacing = 3
             options.backgroundColor = #colorLiteral(red: 0.9467939734, green: 0.9468161464, blue: 0.9468042254, alpha: 1)
         }
         

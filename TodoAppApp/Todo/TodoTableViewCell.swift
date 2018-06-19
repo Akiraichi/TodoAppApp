@@ -36,8 +36,8 @@ class TodoTableViewCell: SwipeTableViewCell {
         let size: CGFloat = 12
         indicatorView.widthAnchor.constraint(equalToConstant: size).isActive = true
         indicatorView.heightAnchor.constraint(equalTo: indicatorView.widthAnchor).isActive = true
-        //        indicatorView.centerXAnchor.constraint(equalTo: fromLabel.leftAnchor, constant: -16).isActive = true
-        //        indicatorView.centerYAnchor.constraint(equalTo: fromLabel.centerYAnchor).isActive = true
+                indicatorView.centerXAnchor.constraint(equalTo: fromLabel.leftAnchor, constant: -16).isActive = true
+                indicatorView.centerYAnchor.constraint(equalTo: fromLabel.centerYAnchor).isActive = true
     }
     
     func setUnread(_ unread: Bool, animated: Bool) {
