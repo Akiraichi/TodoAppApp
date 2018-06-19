@@ -176,11 +176,11 @@ extension ViewController: SwipeTableViewCellDelegate {
         if orientation == .left {
             guard isSwipeRightEnabled else { return nil }
             
-            let read = SwipeAction(style: .default, title: nil) { action, indexPath in
-            }
+            let flag = SwipeAction(style: .default, title: nil, handler: nil)
+            flag.hidesWhenSelected = true
+            configure(action: flag, with: .flag)
             
-            read.hidesWhenSelected = false
-            return [read]
+            return [flag]
         }
             //左スワイプ
         else {
@@ -221,7 +221,7 @@ extension ViewController: SwipeTableViewCellDelegate {
         var options = SwipeOptions()
         options.expansionStyle = orientation == .left ? .selection : .destructive
         options.transitionStyle = defaultOptions.transitionStyle
-        
+        options.backgroundColor = UIColor(hex: "FAF3EB")
         //イメージの最大幅を設定
         
         
