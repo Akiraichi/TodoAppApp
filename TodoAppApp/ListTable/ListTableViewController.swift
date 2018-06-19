@@ -11,8 +11,6 @@ import SwipeCellKit
 
 class ListTableViewController: UITableViewController {
     
-    
-    
     // ToDoを格納した配列
     var listName = [MyList]()
     let userDefaults = UserDefaults.standard
@@ -43,11 +41,7 @@ class ListTableViewController: UITableViewController {
         // ナビゲーションアイテムの右側に編集ボタンを設置
         editButton = UIBarButtonItem(title: "編集", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ListTableViewController.selToEdit(_:)))
         self.navigationItem.rightBarButtonItem = editButton
-        
     }
-
-   
-    
     //テーブル全体の編集の可否を指定する
     @objc func selToEdit(_ sender:Any){
         if self.tableView.isEditing{
@@ -141,28 +135,11 @@ class ListTableViewController: UITableViewController {
         // セルのラベルにToDoのタイトルをセット
         cell.textLabel?.text = myTodo.listTitle
         cell.listName = myTodo.listTitle!
-//        // セルのチェックマーク状態をセット
-//        if myTodo.todoDone {
-//            // チェックあり
-//            cell.accessoryType = UITableViewCellAccessoryType.checkmark
-//        } else {
-//            // チェックなし
-//            cell.accessoryType = UITableViewCellAccessoryType.none
-//        }
         return cell
     }
     
     // セルをタップした時の処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let myTodo = listName[indexPath.row]
-//        if myTodo.todoDone {
-//            // 完了済みの場合は未完了に変更
-//            myTodo.todoDone = false
-//        } else {
-//            // 未完の場合は完了済みに変更
-//            myTodo.todoDone = true
-//        }
-       
         // セルの状態を変更
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         // データ保存。Data型にシリアライズする
@@ -226,8 +203,6 @@ class ListTableViewController: UITableViewController {
         return true
     }
     
-    
-    
     // セルを削除した時の処理
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         // 削除処理かどうか
@@ -245,13 +220,8 @@ class ListTableViewController: UITableViewController {
             userDefaults.synchronize()
             
             //UserDefaultsからリストを削除
-            
         }
     }
-    
-    
-    
-    
 }
     // NSCodingプロトコルに準拠する必要がある
     class MyList: NSObject, NSCoding {
@@ -275,7 +245,4 @@ class ListTableViewController: UITableViewController {
             aCoder.encode(listTitle, forKey: "listTitle")
 //            aCoder.encode(todoDone, forKey: "todoDone")
         }
-        
-       
 }
-

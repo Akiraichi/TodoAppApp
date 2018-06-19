@@ -138,22 +138,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         return false
     }
     
-//    //左スワイプによる削除機能
-//    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-//        let deleteButton: UITableViewRowAction = UITableViewRowAction(style: .normal, title: "削除") { (action, index) -> Void in
-//            //todoArrayから削除
-//            self.todoArray.remove(at: indexPath.row)
-//            //userDefaultsの更新
-//            self.userDefaults.set(self.todoArray, forKey: self.userDefaultsKey)
-//            //見た目上のセルからも削除
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//        }
-//        deleteButton.backgroundColor = UIColor.red
-//        //UserDefaults.standard.removeObject(forKey: "TodoList")
-//        return [deleteButton]
-//
-//    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -224,15 +208,12 @@ extension ViewController: SwipeTableViewCellDelegate {
         options.backgroundColor = UIColor(hex: "FAF3EB")
         //イメージの最大幅を設定
         
-        
-        
-        
         switch buttonStyle {
         case .backgroundColor:
             options.buttonSpacing = 11
         case .circular:
             options.buttonSpacing = 3
-            options.backgroundColor = #colorLiteral(red: 0.9467939734, green: 0.9468161464, blue: 0.9468042254, alpha: 1)
+            options.backgroundColor = UIColor(hex: "FAF3EB")
         }
         
         return options
@@ -253,19 +234,3 @@ extension ViewController: SwipeTableViewCellDelegate {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
