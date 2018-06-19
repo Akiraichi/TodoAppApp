@@ -7,8 +7,17 @@
 //
 
 import UIKit
+import SwipeCellKit
 
 class ListTableViewController: UITableViewController {
+    
+    ///////////////
+    var defaultOptions = SwipeOptions()
+    var isSwipeRightEnabled = true
+    var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
+    var buttonStyle: ButtonStyle = .backgroundColor
+    var usesTallCells = false
+    /////////////////////////////////
     
     // ToDoを格納した配列
     var listName = [MyList]()
@@ -21,7 +30,11 @@ class ListTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        /////////////////////
+        tableView.allowsSelection = true
+        tableView.allowsMultipleSelectionDuringEditing = true
         
+        //////////////////////////
         //// 保存しているToDoの読み込み処理
         let userDefaults = UserDefaults.standard
         if let storedTodoList = userDefaults.object(forKey: "list") as? Data {
@@ -131,15 +144,15 @@ class ListTableViewController: UITableViewController {
 
     // テーブルの行ごとのセルを返却する
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath) as? ListTableViewCell else{
-            return ListTableViewCell()
-        }
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath) as! ListTableViewCell
+        cell.delegate = self as? SwipeTableViewCellDelegate
+        cell.selectedBackgroundView = createSelectedBackgroundView()
+        
         // 行番号に合ったToDoの情報を取得
         let myTodo = listName[indexPath.row]
         // セルのラベルにToDoのタイトルをセット
         cell.textLabel?.text = myTodo.listTitle
-        cell.listName = myTodo.listTitle!
+        cell.titleName = myTodo.listTitle!
 //        // セルのチェックマーク状態をセット
 //        if myTodo.todoDone {
 //            // チェックあり
@@ -247,6 +260,17 @@ class ListTableViewController: UITableViewController {
             
         }
     }
+    ////////////////////////////////////
+    // MARK: - Helpers
+    //viewのバックグラウンドカラーを変更
+    func createSelectedBackgroundView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
+        return view
+    }
+    
+    
+    
 }
     // NSCodingプロトコルに準拠する必要がある
     class MyList: NSObject, NSCoding {
@@ -270,4 +294,95 @@ class ListTableViewController: UITableViewController {
             aCoder.encode(listTitle, forKey: "listTitle")
 //            aCoder.encode(todoDone, forKey: "todoDone")
         }
+        
+       
 }
+
+extension ListTableViewController: SwipeTableViewCellDelegate {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        
+        //右スワイプ
+        if orientation == .left {
+            guard isSwipeRightEnabled else { return nil }
+            
+            let read = SwipeAction(style: .default, title: nil) { action, indexPath in
+            }
+            
+            read.hidesWhenSelected = false
+            return [read]
+        }
+        //左スワイプ
+        else {
+            let flag = SwipeAction(style: .default, title: nil, handler: nil)
+            flag.hidesWhenSelected = true
+            configure(action: flag, with: .flag)
+            
+            let delete = SwipeAction(style: .destructive, title: nil) { action, indexPath in
+                
+            }
+            configure(action: delete, with: .trash)
+            
+            let cell = tableView.cellForRow(at: indexPath) as! ListTableViewCell
+            let closure: (UIAlertAction) -> Void = { _ in cell.hideSwipe(animated: true) }
+            let more = SwipeAction(style: .default, title: nil) { action, indexPath in
+                let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                controller.addAction(UIAlertAction(title: "Reply", style: .default, handler: closure))
+                controller.addAction(UIAlertAction(title: "Forward", style: .default, handler: closure))
+                controller.addAction(UIAlertAction(title: "Mark...", style: .default, handler: closure))
+                controller.addAction(UIAlertAction(title: "Notify Me...", style: .default, handler: closure))
+                controller.addAction(UIAlertAction(title: "Move Message...", style: .default, handler: closure))
+                controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: closure))
+                self.present(controller, animated: true, completion: nil)
+            }
+            configure(action: more, with: .more)
+            
+            return [delete, flag, more]
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = orientation == .left ? .selection : .destructive
+        options.transitionStyle = defaultOptions.transitionStyle
+        
+        switch buttonStyle {
+        case .backgroundColor:
+            options.buttonSpacing = 11
+        case .circular:
+            options.buttonSpacing = 4
+            options.backgroundColor = #colorLiteral(red: 0.9467939734, green: 0.9468161464, blue: 0.9468042254, alpha: 1)
+        }
+        
+        return options
+    }
+    
+    func configure(action: SwipeAction, with descriptor: ActionDescriptor) {
+        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
+        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
+        
+        switch buttonStyle {
+        case .backgroundColor:
+            action.backgroundColor = descriptor.color
+        case .circular:
+            action.backgroundColor = .clear
+            action.textColor = descriptor.color
+            action.font = .systemFont(ofSize: 13)
+            action.transitionDelegate = ScaleTransition.default
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

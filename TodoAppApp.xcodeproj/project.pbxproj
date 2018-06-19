@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		85300DB420D4FE120027378E /* ListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85300DB320D4FE120027378E /* ListTableViewController.swift */; };
 		85300DB620D4FECE0027378E /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85300DB520D4FECE0027378E /* ListTableViewCell.swift */; };
+		8543E1D020D90DB600434340 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8543E1CF20D90DB500434340 /* File.swift */; };
 		854DF19020C95A5800F2E51C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854DF18F20C95A5800F2E51C /* AppDelegate.swift */; };
 		854DF19220C95A5800F2E51C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854DF19120C95A5800F2E51C /* ViewController.swift */; };
 		854DF19520C95A5800F2E51C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 854DF19320C95A5800F2E51C /* Main.storyboard */; };
@@ -23,6 +24,7 @@
 		0B8CFD4233960F65877120F4 /* Pods-TodoAppApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TodoAppApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-TodoAppApp/Pods-TodoAppApp.release.xcconfig"; sourceTree = "<group>"; };
 		85300DB320D4FE120027378E /* ListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewController.swift; sourceTree = "<group>"; };
 		85300DB520D4FECE0027378E /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		8543E1CF20D90DB500434340 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		854DF18C20C95A5800F2E51C /* TodoAppApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoAppApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		854DF18F20C95A5800F2E51C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		854DF19120C95A5800F2E51C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 			children = (
 				85300DB520D4FECE0027378E /* ListTableViewCell.swift */,
 				85300DB320D4FE120027378E /* ListTableViewController.swift */,
+				8543E1CF20D90DB500434340 /* File.swift */,
 			);
 			path = ListTable;
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 			files = (
 				856C964D20CA63FD006C601B /* CheckBox.swift in Sources */,
 				854DF1A220C95B5100F2E51C /* TodoTableViewCell.swift in Sources */,
+				8543E1D020D90DB600434340 /* File.swift in Sources */,
 				854DF19220C95A5800F2E51C /* ViewController.swift in Sources */,
 				85300DB420D4FE120027378E /* ListTableViewController.swift in Sources */,
 				854DF19020C95A5800F2E51C /* AppDelegate.swift in Sources */,
