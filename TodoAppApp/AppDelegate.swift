@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Nvigationバーのテキストカラーを白色に変更
         UINavigationBar.appearance().tintColor = UIColor.white
         //ナビゲーションバーの背景を変更
-        UINavigationBar.appearance().barTintColor = UIColor(hex: "681013")
+        UINavigationBar.appearance().barTintColor = UIColor(hex: "510901")
         
         // Override point for customization after application launch.
         return true

@@ -36,9 +36,6 @@ class ListTableViewController: UITableViewController {
         longPressGesture.numberOfTapsRequired = 0
         longPressGesture.numberOfTouchesRequired = 1
         self.view.addGestureRecognizer(longPressGesture)
-        
-       
-    
             
         // ナビゲーションアイテムの右側に編集ボタンを設置
         editButton = UIBarButtonItem(title: "編集", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ListTableViewController.selToEdit(_:)))
@@ -46,6 +43,8 @@ class ListTableViewController: UITableViewController {
         
     }
 
+   
+    
     //テーブル全体の編集の可否を指定する
     @objc func selToEdit(_ sender:Any){
         if self.tableView.isEditing{
