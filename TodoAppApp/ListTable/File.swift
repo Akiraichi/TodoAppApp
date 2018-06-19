@@ -28,9 +28,9 @@ enum ActionDescriptor {
         switch self {
         case .read: return "Read"
         case .unread: return "Unread"
-        case .more: return "More"
+        case .more: return  "more"
         case .flag: return "Flag"
-        case .trash: return "削除"
+        case .trash: return ""
         }
     }
     

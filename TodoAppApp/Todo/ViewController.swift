@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SwipeCellKit
 
 
 class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate {
@@ -15,6 +15,13 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     @IBOutlet weak var uiTableView: UITableView!
     @IBOutlet weak var todoText: UITextField!
    
+    ///////////////
+    var defaultOptions = SwipeOptions()
+    var isSwipeRightEnabled = true
+    var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
+    var buttonStyle: ButtonStyle = .backgroundColor
+    var usesTallCells = false
+    /////////////////////////////////
     
     //penguin_image
     @IBOutlet weak var image: UIImageView!
@@ -64,6 +71,12 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         self.uiTableView.delegate=self
         self.uiTableView.dataSource=self
+        
+        /////////////////////
+        uiTableView.allowsSelection = true
+        uiTableView.allowsMultipleSelectionDuringEditing = true
+        
+        //////////////////////////
         
         //イメージがフェードイン
         image.alpha = 0.0
@@ -116,6 +129,11 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let todoCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoTableViewCell
+        
+        todoCell.delegate = self
+        todoCell.selectedBackgroundView = createSelectedBackgroundView()
+        
+        
         //変数の中身を作る
         todoCell.todoTextCell?.text = todoArray[indexPath.row]
         
@@ -157,6 +175,103 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    ////////////////////////////////////
+    // MARK: - Helpers
+    //viewのバックグラウンドカラーを変更
+    func createSelectedBackgroundView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
+        return view
+    }
 }
+
+extension ViewController: SwipeTableViewCellDelegate {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        
+        //右スワイプ
+        if orientation == .left {
+            guard isSwipeRightEnabled else { return nil }
+            
+            let read = SwipeAction(style: .default, title: nil) { action, indexPath in
+            }
+            
+            read.hidesWhenSelected = false
+            return [read]
+        }
+            //左スワイプ
+        else {
+            let flag = SwipeAction(style: .default, title: nil, handler: nil)
+            flag.hidesWhenSelected = true
+            configure(action: flag, with: .flag)
+            
+            let delete = SwipeAction(style: .destructive, title: nil) { action, indexPath in
+                
+            }
+            configure(action: delete, with: .trash)
+            
+            let cell = tableView.cellForRow(at: indexPath) as! TodoTableViewCell
+            let closure: (UIAlertAction) -> Void = { _ in cell.hideSwipe(animated: true) }
+            let more = SwipeAction(style: .default, title: nil) { action, indexPath in
+                let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                controller.addAction(UIAlertAction(title: "Reply", style: .default, handler: closure))
+                controller.addAction(UIAlertAction(title: "Forward", style: .default, handler: closure))
+                controller.addAction(UIAlertAction(title: "Mark...", style: .default, handler: closure))
+                controller.addAction(UIAlertAction(title: "Notify Me...", style: .default, handler: closure))
+                controller.addAction(UIAlertAction(title: "Move Message...", style: .default, handler: closure))
+                controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: closure))
+                self.present(controller, animated: true, completion: nil)
+            }
+            configure(action: more, with: .more)
+            
+            return [delete, flag, more]
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = orientation == .left ? .selection : .destructive
+        options.transitionStyle = defaultOptions.transitionStyle
+        
+        switch buttonStyle {
+        case .backgroundColor:
+            options.buttonSpacing = 11
+        case .circular:
+            options.buttonSpacing = 4
+            options.backgroundColor = #colorLiteral(red: 0.9467939734, green: 0.9468161464, blue: 0.9468042254, alpha: 1)
+        }
+        
+        return options
+    }
+    
+    func configure(action: SwipeAction, with descriptor: ActionDescriptor) {
+        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
+        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
+        
+        switch buttonStyle {
+        case .backgroundColor:
+            action.backgroundColor = descriptor.color
+        case .circular:
+            action.backgroundColor = .clear
+            action.textColor = descriptor.color
+            action.font = .systemFont(ofSize: 13)
+            action.transitionDelegate = ScaleTransition.default
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
