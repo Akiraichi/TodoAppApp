@@ -150,7 +150,7 @@ class ListTableViewController: UITableViewController {
             return cell
         }
         let selectedView = UIView()
-        selectedView.backgroundColor = UIColor(hex: "FB7D79", alpha: 0.5)
+        selectedView.backgroundColor = UIColor(hex: "f8cd9e")
         cell.selectedBackgroundView =  selectedView
         
         cell.textLabel?.text = listTitle
