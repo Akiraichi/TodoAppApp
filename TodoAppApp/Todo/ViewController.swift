@@ -66,10 +66,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                            name: Notification.Name.UIApplicationWillTerminate,
                            object: nil)
         
-        
-        
         //UDに保存されている値を取得。オプショナルバインディングで書き換えてみた。
-        if let str = UserDefaults.standard.object(forKey: userDefaultsKey) {
+        if let str = userDefaults.object(forKey: userDefaultsKey) {
             todoArray = str as! [String]    //Any型なのでString型にダウンキャスト
         }
     }

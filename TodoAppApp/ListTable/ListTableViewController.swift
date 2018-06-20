@@ -204,43 +204,37 @@ class ListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         // 削除処理かどうか
         if editingStyle == UITableViewCellEditingStyle.delete {
-            // ToDoリストから削除
-            listName.remove(at: indexPath.row)
-            // セルを削除
-            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+           //削除処理
+            userDefaults.removeObject(forKey: listName[indexPath.row].listTitle!)    //TodoをUDから削除
+            listName.remove(at: indexPath.row)   // リストから削除
+            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)   // セルを削除
             
-            // データ保存。Data型にシリアライズする
-            let data: Data = NSKeyedArchiver.archivedData(withRootObject: listName)
-            // UserDefautlsに保存
-            let userDefaults = UserDefaults.standard
-            userDefaults.set(data, forKey: "list")
+            // データ保存
+            let data: Data = NSKeyedArchiver.archivedData(withRootObject: listName) //Data型にシリアライズする
+            userDefaults.set(data, forKey: "list")   // UserDefautlsに保存
             userDefaults.synchronize()
-            
-            //UserDefaultsからリストを削除
         }
     }
 }
 
     // NSCodingプロトコルに準拠する必要がある
     class MyList: NSObject, NSCoding {
-        // ToDoのタイトル
-        var listTitle: String?
-//        // ToDoを完了したかどうかを表すフラグ
-//        var todoDone: Bool = false
+        var listTitle: String?  // ToDoのタイトル
+        // ToDoを完了したかどうかを表すフラグ
+        //var todoDone: Bool = false
         // コンストラクタ
         override init() {
-            
         }
         
         // NSCodingプロトコルに宣言されているデシリアライズ処理。デコード処理とも呼ばれる
         required init?(coder aDecoder: NSCoder) {
             listTitle = aDecoder.decodeObject(forKey: "listTitle") as? String
-//            todoDone = aDecoder.decodeBool(forKey: "todoDone")
+            //todoDone = aDecoder.decodeBool(forKey: "todoDone")
         }
         
         // NSCodingプロトコルに宣言されているシリアライズ処理。エンコード処理とも呼ばれる
         func encode(with aCoder: NSCoder) {
             aCoder.encode(listTitle, forKey: "listTitle")
-//            aCoder.encode(todoDone, forKey: "todoDone")
+            //aCoder.encode(todoDone, forKey: "todoDone")
         }
 }
