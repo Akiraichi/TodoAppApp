@@ -81,15 +81,18 @@ class ListTableViewController: UITableViewController {
         let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
             // OKボタンがタップされた時の処理
             if let textField = alertController.textFields?.first {
+                //textプロパティに値が存在するかチェック
+                guard let inputText = textField.text else{
+                    return
+                }
                 //入力された文字が1文字以上かチェック
-                guard (textField.text?.lengthOfBytes(using: String.Encoding.utf8))! > 0 else{
+                guard inputText.lengthOfBytes(using: String.Encoding.utf8) > 0 else{
                     return
                 }
                 
                 // ToDoの配列に入力値を挿入。先頭に挿入する
                 let myTodo = MyList()
-                
-                myTodo.listTitle = textField.text
+                myTodo.listTitle = inputText
                 self.listName.insert(myTodo, at: 0)
                 
                 // テーブルに行が追加されたことをテーブルに通知
@@ -97,20 +100,18 @@ class ListTableViewController: UITableViewController {
                 
                 // ToDoの保存処理
                 let userDefaults = UserDefaults.standard
+                
                 // Data型にシリアライズする
                 let data = NSKeyedArchiver.archivedData(withRootObject: self.listName)
                 userDefaults.set(data, forKey: "list")
                 userDefaults.synchronize()
             }
         }
-        
-        // OKボタンを追加
-        alertController.addAction(okAction)
-        
+        alertController.addAction(okAction) // OKボタンを追加
+    
         // CANCELボタンがタップされた時の処理
         let cancelButton = UIAlertAction(title: "CANCEL", style: UIAlertActionStyle.cancel, handler: nil)
-        // CANCELボタンを追加
-        alertController.addAction(cancelButton)
+        alertController.addAction(cancelButton)  // CANCELボタンを追加
         
         // アラートダイアログを表示
         present(alertController, animated: true, completion: nil)
@@ -135,45 +136,38 @@ class ListTableViewController: UITableViewController {
         // 行番号に合ったToDoの情報を取得
         let myTodo = listName[indexPath.row]
         // セルのラベルにToDoのタイトルをセット
-        cell.textLabel?.text = myTodo.listTitle
-        cell.listNameTitle = myTodo.listTitle!
-        cell.textLabel?.font = UIFont(name: "System", size: 14)
+        guard let listTitle = myTodo.listTitle else {
+            return cell
+        }
+        cell.textLabel?.text = listTitle
+        cell.listNameTitle = listTitle
+        cell.textLabel?.font = UIFont(name: "System", size: 14) //Fontサイズを14に設定
         return cell
     }
     
     // セルをタップした時の処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // セルの状態を変更
-        tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
-        // データ保存。Data型にシリアライズする
-        let data: Data = NSKeyedArchiver.archivedData(withRootObject: listName)
-        // UserDefautlsに保存
-        let userDefaults = UserDefaults.standard
-        userDefaults.set(data, forKey: "list")
-        userDefaults.synchronize()
     }
     
     //セルの移動を許可
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool{
-       //セルは移動可能
         return true
     }
     
     // テーブルのセルを移動
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath)
-    {
+    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath){
         print("\(fromIndexPath.row)番地から\(to.row)番地に移動しました")
     }
     
-//    //長押しで並べ替え
+    //長押しで並べ替え
     @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
-        
         switch sender.state {
         case UIGestureRecognizerState.began:
             self.setEditing(true, animated: true)
             editButton?.title = "完了"
 
         case UIGestureRecognizerState.ended:
+            //ここでシングルたっぷり来ないざーをONにする
             break
         default:
             break
