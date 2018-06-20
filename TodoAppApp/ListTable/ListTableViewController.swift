@@ -49,12 +49,10 @@ class ListTableViewController: UITableViewController {
         if self.tableView.isEditing{
             //編集可能なら編集不可にする
             editButton?.title = "編集"
-            longPressGesture.minimumPressDuration = 0.5 //長押しと認識する時間を戻す
             self.setEditing(false, animated: true)
         }else{
             //編集不可なら可能にする
             editButton?.title = "完了"
-            longPressGesture.minimumPressDuration = 0.1 //長押しと認識する時間を速くして、tapと同等のレベルで編集モードをキャンセルできる
             self.setEditing(true, animated: true)
         }
     }
@@ -164,7 +162,7 @@ class ListTableViewController: UITableViewController {
         print("\(fromIndexPath.row)番地から\(to.row)番地に移動しました")
     }
     
-    //長押しで並べ替え
+    //長押しで編集モード
     @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
         switch sender.state {
         case UIGestureRecognizerState.began:
