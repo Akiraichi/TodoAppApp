@@ -22,7 +22,6 @@ class ListTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //// 保存しているToDoの読み込み処理
         let userDefaults = UserDefaults.standard
         if let storedTodoList = userDefaults.object(forKey: "list") as? Data {
@@ -30,7 +29,6 @@ class ListTableViewController: UITableViewController {
                 listName.append(contentsOf: unarchiveTodlList)
             }
         }
-   
         //長押しジェスチャーの追加
         let longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ListTableViewController.longPressHandler(_:)))
         longPressGesture.minimumPressDuration = 0.5
@@ -43,17 +41,13 @@ class ListTableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = editButton
     }
     
-
-    
-    
     //テーブル全体の編集の可否を指定する
     @objc func selToEdit(_ sender:Any){
         if self.tableView.isEditing{
             //編集可能なら編集不可にする
             editButton?.title = "編集"
             self.setEditing(false, animated: true)
-        }
-        else{
+        }else{
             //編集不可なら可能にする
             editButton?.title = "完了"
             self.setEditing(true, animated: true)
@@ -62,7 +56,6 @@ class ListTableViewController: UITableViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     //リストセルをタップしてTodoリストへ遷移する前の処理
@@ -75,7 +68,6 @@ class ListTableViewController: UITableViewController {
             let backButtonItem = UIBarButtonItem(title: cell.listNameTitle, style: .plain, target: nil, action: nil)
             navigationItem.backBarButtonItem = backButtonItem
         }
-        
     }
     
     // +ボタンをタップしたときに呼ばれる処理
@@ -89,9 +81,15 @@ class ListTableViewController: UITableViewController {
         let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
             // OKボタンがタップされた時の処理
             if let textField = alertController.textFields?.first {
+                //入力された文字が1文字以上かチェック
+                guard (textField.text?.lengthOfBytes(using: String.Encoding.utf8))! > 0 else{
+                    return
+                }
+                
                 // ToDoの配列に入力値を挿入。先頭に挿入する
                 let myTodo = MyList()
-                myTodo.listTitle = textField.text!
+                
+                myTodo.listTitle = textField.text
                 self.listName.insert(myTodo, at: 0)
                 
                 // テーブルに行が追加されたことをテーブルに通知

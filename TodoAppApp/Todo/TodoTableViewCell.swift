@@ -67,6 +67,10 @@ class TodoTableViewCell: SwipeTableViewCell {
     
     @IBAction func checkBoxAct(_ sender: Any) {
         if !strikeOn{
+            guard let todoTextCell = todoTextCell else{
+                print("エラー2")
+                return
+            }
             guard let todoText = todoTextCell.text else{
                 print("エラー1")
                 return

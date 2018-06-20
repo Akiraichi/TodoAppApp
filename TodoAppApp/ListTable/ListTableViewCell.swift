@@ -10,11 +10,12 @@ import UIKit
 import SwipeCellKit
 
 class ListTableViewCell: SwipeTableViewCell {
-   
-  
     override func awakeFromNib() {
-        
+        super.awakeFromNib()
     }
     
-    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        //元々入っている情報を再利用時にクリア
+    }
 }
