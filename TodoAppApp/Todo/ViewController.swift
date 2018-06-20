@@ -119,7 +119,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         //変数の中身を作る
         todoCell.todoTextCell?.text = todoArray[indexPath.row]
-        
+
         //戻り値の設定（表示する中身)
         return todoCell
     }

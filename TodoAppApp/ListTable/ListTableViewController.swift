@@ -42,6 +42,10 @@ class ListTableViewController: UITableViewController {
         editButton = UIBarButtonItem(title: "編集", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ListTableViewController.selToEdit(_:)))
         self.navigationItem.rightBarButtonItem = editButton
     }
+    
+
+    
+    
     //テーブル全体の編集の可否を指定する
     @objc func selToEdit(_ sender:Any){
         if self.tableView.isEditing{
@@ -65,10 +69,10 @@ class ListTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let cell = sender as? ListTableViewCell{
             if let viewController = segue.destination as? ViewController{
-                viewController.userDefaultsKey = cell.listName
+                viewController.userDefaultsKey = cell.listNameTitle
             }
             //遷移先のbarBottunのテキストをリスト名に変更
-            let backButtonItem = UIBarButtonItem(title: cell.listName, style: .plain, target: nil, action: nil)
+            let backButtonItem = UIBarButtonItem(title: cell.listNameTitle, style: .plain, target: nil, action: nil)
             navigationItem.backBarButtonItem = backButtonItem
         }
         
@@ -134,7 +138,8 @@ class ListTableViewController: UITableViewController {
         let myTodo = listName[indexPath.row]
         // セルのラベルにToDoのタイトルをセット
         cell.textLabel?.text = myTodo.listTitle
-        cell.listName = myTodo.listTitle!
+        cell.listNameTitle = myTodo.listTitle!
+        cell.textLabel?.font = UIFont(name: "System", size: 14)
         return cell
     }
     

@@ -11,7 +11,7 @@ import SwipeCellKit
 
 class ListTableViewCell: SwipeTableViewCell {
    
-   var listTitleName: String = ""
+  
     override func awakeFromNib() {
         
     }

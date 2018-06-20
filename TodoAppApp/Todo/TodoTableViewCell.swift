@@ -67,14 +67,19 @@ class TodoTableViewCell: SwipeTableViewCell {
     
     @IBAction func checkBoxAct(_ sender: Any) {
         if !strikeOn{
-            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: todoTextCell.text!)
-        attributeString.addAttribute(NSAttributedStringKey.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
+            guard let todoText = todoTextCell.text else{
+                print("エラー1")
+                return
+            }
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: todoText)
+            attributeString.addAttribute(NSAttributedStringKey.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
             self.todoTextCell.attributedText=attributeString
             
             //textcolorを変更する
             todoTextCell.textColor=UIColor(hex: "ccd1d2")
             //取り消し線を加える
             strikeOn=true
+            
         }else{
             let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: todoTextCell.text!)
             attributeString.addAttribute(NSAttributedStringKey.strikethroughStyle, value: 0, range: NSMakeRange(0, attributeString.length))
