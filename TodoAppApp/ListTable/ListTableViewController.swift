@@ -18,6 +18,9 @@ class ListTableViewController: UITableViewController {
     var editButton :UIBarButtonItem?
     @IBOutlet weak var listTableView: UITableView!
 
+    //letで宣言のみすることができなかったので冗長になっている。将来的に修正予定
+    var longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ListTableViewController.longPressHandler(_:)))
+    
     @IBOutlet weak var plusBarButtonItem: UIBarButtonItem!
     
     override func viewDidLoad() {
@@ -30,12 +33,12 @@ class ListTableViewController: UITableViewController {
             }
         }
         //長押しジェスチャーの追加
-        let longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ListTableViewController.longPressHandler(_:)))
+        longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ListTableViewController.longPressHandler(_:)))
         longPressGesture.minimumPressDuration = 0.5
         longPressGesture.numberOfTapsRequired = 0
         longPressGesture.numberOfTouchesRequired = 1
         self.view.addGestureRecognizer(longPressGesture)
-            
+        
         // ナビゲーションアイテムの右側に編集ボタンを設置
         editButton = UIBarButtonItem(title: "編集", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ListTableViewController.selToEdit(_:)))
         self.navigationItem.rightBarButtonItem = editButton
@@ -46,10 +49,12 @@ class ListTableViewController: UITableViewController {
         if self.tableView.isEditing{
             //編集可能なら編集不可にする
             editButton?.title = "編集"
+            longPressGesture.minimumPressDuration = 0.5 //長押しと認識する時間を戻す
             self.setEditing(false, animated: true)
         }else{
             //編集不可なら可能にする
             editButton?.title = "完了"
+            longPressGesture.minimumPressDuration = 0.1 //長押しと認識する時間を速くして、tapと同等のレベルで編集モードをキャンセルできる
             self.setEditing(true, animated: true)
         }
     }
@@ -163,12 +168,8 @@ class ListTableViewController: UITableViewController {
     @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
         switch sender.state {
         case UIGestureRecognizerState.began:
-            self.setEditing(true, animated: true)
-            editButton?.title = "完了"
-
-        case UIGestureRecognizerState.ended:
-            //ここでシングルたっぷり来ないざーをONにする
-            break
+            selToEdit(self)
+            
         default:
             break
         }
