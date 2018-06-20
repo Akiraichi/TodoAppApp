@@ -11,8 +11,15 @@ import SwipeCellKit
 
 class ListTableViewController: UITableViewController {
     
+    //動的な並び替えのため
+    fileprivate var sourceIndexPath: IndexPath?     //save index path of tableview cell, where gesture begins
+    fileprivate var snapshot: UIView?   //to save snapshot of the cell user is moving.
+    
+    //list
+   fileprivate var todoList = [String]()
+    
     // ToDoを格納した配列
-    var listName = [MyList]()
+   fileprivate var listName = [MyList]()
     let userDefaults = UserDefaults.standard
     
     var editButton :UIBarButtonItem?
@@ -142,6 +149,10 @@ class ListTableViewController: UITableViewController {
         guard let listTitle = myTodo.listTitle else {
             return cell
         }
+        let selectedView = UIView()
+        selectedView.backgroundColor = UIColor(hex: "FB7D79", alpha: 0.5)
+        cell.selectedBackgroundView =  selectedView
+        
         cell.textLabel?.text = listTitle
         cell.listNameTitle = listTitle
         cell.textLabel?.font = UIFont(name: "System", size: 14) //Fontサイズを14に設定
@@ -164,13 +175,99 @@ class ListTableViewController: UITableViewController {
     
     //長押しで編集モード
     @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
-        switch sender.state {
-        case UIGestureRecognizerState.began:
-            selToEdit(self)
+        let state = sender.state    //状態
+        let location = sender.location(in: self.tableView)  //位置
+        
+        guard let indexPath = self.tableView.indexPathForRow(at: location) else { return }   //その場所がnilの場合に備える
+        
+        switch state{
+            case .began:
+                sourceIndexPath = indexPath
+                guard let cell = self.tableView.cellForRow(at: indexPath) else { return }   //cell作成
+                
+                // Take a snapshot of the selected row using helper method. See below method
+                snapshot = self.customSnapshotFromView(inputView: cell)
+                guard  let snapshot = self.snapshot else { return }
+                
+                var center = cell.center
+                snapshot.center = center
+                snapshot.alpha = 0.0
+                self.tableView.addSubview(snapshot)
+                
+                UIView.animate(withDuration: 0.25, animations: {
+                    center.y = location.y
+                    snapshot.center = center
+                    snapshot.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                    snapshot.alpha = 0.98
+                    cell.alpha = 0.0
+                }, completion: { (finished) in
+                    cell.isHidden = true
+                })
             
-        default:
-            break
+            case .changed:
+                guard  let snapshot = self.snapshot else {
+                    return
+                }
+                var center = snapshot.center
+                center.y = location.y
+                snapshot.center = center
+                guard let sourceIndexPath = self.sourceIndexPath  else {
+                    return
+                }
+                if indexPath != sourceIndexPath {
+                    swap(&listName[indexPath.row], &listName[sourceIndexPath.row])
+                    
+                    self.tableView.moveRow(at: sourceIndexPath, to: indexPath)
+                    self.sourceIndexPath = indexPath
+                }
+            
+            default:
+                guard let cell = self.tableView.cellForRow(at: indexPath) else {
+                    return
+                }
+                guard  let snapshot = self.snapshot else {
+                    return
+                }
+                cell.isHidden = false
+                cell.alpha = 0.0
+                
+                UIView.animate(withDuration: 0.25, animations: {
+                    snapshot.center = cell.center
+                    snapshot.transform = CGAffineTransform.identity
+                    snapshot.alpha = 0
+                    cell.alpha = 1
+                }, completion: { (finished) in
+                    self.cleanup()
+                })
         }
+    }
+    
+    //cleanup
+    private func cleanup() {
+        self.sourceIndexPath = nil
+        snapshot?.removeFromSuperview()
+        self.snapshot = nil
+        self.tableView.reloadData()
+    }
+    
+    //helper
+    private func customSnapshotFromView(inputView: UIView) -> UIView? {
+        UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0)
+        if let CurrentContext = UIGraphicsGetCurrentContext() {
+            inputView.layer.render(in: CurrentContext)
+        }
+        guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
+            UIGraphicsEndImageContext()
+            return nil
+        }
+        UIGraphicsEndImageContext()
+        let snapshot = UIImageView(image: image)
+        snapshot.layer.masksToBounds = false
+        snapshot.layer.cornerRadius = 0
+        snapshot.layer.shadowOffset = CGSize(width: -5, height: 0)
+        snapshot.layer.shadowRadius = 5
+        snapshot.layer.shadowOpacity = 0.4
+        return snapshot
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
