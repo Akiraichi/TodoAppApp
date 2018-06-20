@@ -81,18 +81,25 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     //OKボタンをタップした時のメソッド
     @IBAction func okTButtonTaped(_ sender: Any) {
-        //入力内容を配列の先頭に入れる→新しいリストが先頭のセルに出る
-        todoArray.insert(todoText.text!, at: 0)
-        //追加ボタンを押したらフィールドを空にする
-        todoText.text = ""
-        //変数の中身をUDに追加
-        userDefaults.set( todoArray, forKey: userDefaultsKey )
-        //UDの値を明示的に同期
-        userDefaults.synchronize()
+        //textプロパティに値が存在するかチェック
+        guard let inputText = todoText.text else{
+            return
+        }
+        //入力された文字が1文字以上かチェック
+        guard inputText.lengthOfBytes(using: String.Encoding.utf8) > 0 else{
+            return
+        }
+
+        todoArray.insert(inputText, at: 0) //入力内容を配列の先頭に入れる
+        todoText.text = ""  //追加ボタンを押したらフィールドを空にする
         //tableを再生成して、表示を更新
         self.uiTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.fade)
-        //キーボード閉じる
-        view.endEditing(true)
+        
+        //保存処理
+        userDefaults.set( todoArray, forKey: userDefaultsKey )
+        userDefaults.synchronize()
+        
+        view.endEditing(true)   //キーボード閉じる
     }
     
     //通知処理。ただし書きかけ

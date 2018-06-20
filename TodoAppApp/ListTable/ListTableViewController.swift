@@ -191,7 +191,7 @@ class ListTableViewController: UITableViewController {
         if tableView.isEditing  {
             return UITableViewCellEditingStyle.delete
         }else{
-        return UITableViewCellEditingStyle.none
+            return UITableViewCellEditingStyle.none
         }
     }
     
@@ -220,6 +220,7 @@ class ListTableViewController: UITableViewController {
         }
     }
 }
+
     // NSCodingプロトコルに準拠する必要がある
     class MyList: NSObject, NSCoding {
         // ToDoのタイトル
