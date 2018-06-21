@@ -58,7 +58,6 @@ class TodoTableViewCell: SwipeTableViewCell {
             closure()
         }
     }
-    ////////////////////////////////////////////////
     
     @IBOutlet weak var todoTextCell: UITextField!
     @IBOutlet weak var checkBox: CheckBox!
@@ -101,7 +100,6 @@ class TodoTableViewCell: SwipeTableViewCell {
         todoTextCell=nil
         strikeOn=false
     }
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()

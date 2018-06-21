@@ -39,6 +39,8 @@ class ListTableViewController: UITableViewController {
                 listName.append(contentsOf: unarchiveTodlList)
             }
         }
+        
+        
         //長押しジェスチャーの追加
         longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ListTableViewController.longPressHandler(_:)))
         longPressGesture.minimumPressDuration = 0.5
@@ -143,14 +145,18 @@ class ListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath) as! ListTableViewCell
         
+        //リスト名入力してもらうためのセル
+        let inputCell = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath) as! ListTableViewCell
         // 行番号に合ったToDoの情報を取得
         let myTodo = listName[indexPath.row]
         // セルのラベルにToDoのタイトルをセット
         guard let listTitle = myTodo.listTitle else {
             return cell
         }
+        
+        //cell選択時の背景色を変更する
         let selectedView = UIView()
-        selectedView.backgroundColor = UIColor(hex: "f8cd9e")
+        selectedView.backgroundColor = UIColor(hex: "A8DBA8")
         cell.selectedBackgroundView =  selectedView
         
         cell.textLabel?.text = listTitle
