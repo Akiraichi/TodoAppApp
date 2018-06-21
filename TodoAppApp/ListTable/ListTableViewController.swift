@@ -8,6 +8,7 @@
 
 import UIKit
 import SwipeCellKit
+import TapticEngine
 
 class ListTableViewController: UITableViewController, UITextFieldDelegate {
     
@@ -199,6 +200,8 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
                 snapshot.alpha = 0.0
                 self.tableView.addSubview(snapshot)
                 
+                TapticEngine.impact.prepare(.heavy)
+                
                 UIView.animate(withDuration: 0.25, animations: {
                     center.y = location.y
                     snapshot.center = center
@@ -208,6 +211,9 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
                 }, completion: { (finished) in
                     cell.isHidden = true
                 })
+                TapticEngine.impact.feedback(.heavy)
+            
+            
             
             case .changed:
                 guard  let snapshot = self.snapshot else {
@@ -224,6 +230,7 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
                     if listName.count > indexPath.row && listName.count > sourceIndexPath.row{
                         //listName.countより大きいindexには何もない
                         swap(&listName[indexPath.row], &listName[sourceIndexPath.row])
+                        TapticEngine.impact.feedback(.heavy)
                         self.tableView.moveRow(at: sourceIndexPath, to: indexPath)
                         self.sourceIndexPath = indexPath
                     }

@@ -1,16 +1,20 @@
 PODS:
   - SwipeCellKit (2.4.2)
+  - TapticEngine (1.1.0)
 
 DEPENDENCIES:
   - SwipeCellKit
+  - TapticEngine
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - SwipeCellKit
+    - TapticEngine
 
 SPEC CHECKSUMS:
   SwipeCellKit: a01c587d6786f514a44eed54261e24eaa9fb4de6
+  TapticEngine: b78b5513432b3c01af2ebbe018c0995778306757
 
-PODFILE CHECKSUM: beb83c23109ec5eddd4f5ebbb7b3b0f19e30f2de
+PODFILE CHECKSUM: d64321d37a9fa6b9a926f4800b4208a5eede69e6
 
 COCOAPODS: 1.5.2
