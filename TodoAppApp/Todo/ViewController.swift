@@ -15,6 +15,12 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     //Todo入れるテキストフィールド
     @IBOutlet weak var todoText: UITextField!
    
+    //動的な並び替えのため
+    fileprivate var sourceIndexPath: IndexPath?     //save index path of tableview cell, where gesture begins
+    fileprivate var snapshot: UIView?   //to save snapshot of the cell user is moving.
+    //letで宣言のみすることができなかったので冗長になっている。将来的に修正予定
+    var longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPressHandler(_:)))
+    
     var defaultOptions = SwipeOptions() //右スワイプを許可する
     
     var isSwipeRightEnabled = true      //displayモードをimageモードにする
@@ -29,7 +35,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     @IBOutlet var singleRecognizer: UITapGestureRecognizer!
     
     //空の辞書を作成
-    var todoArray = [String]()
+    fileprivate var todoArray = [String]()  //動的並べ替えのため
     let userDefaults = UserDefaults.standard
     //UDのキーを設定するための変数
     var userDefaultsKey: String = ""
@@ -43,6 +49,13 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //スワイプのための設定
         uiTableView.allowsSelection = true
         uiTableView.allowsMultipleSelectionDuringEditing = true
+        
+        //長押しジェスチャーの追加
+        longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ListTableViewController.longPressHandler(_:)))
+        longPressGesture.minimumPressDuration = 0.5
+        longPressGesture.numberOfTapsRequired = 0
+        longPressGesture.numberOfTouchesRequired = 1
+        self.uiTableView.addGestureRecognizer(longPressGesture)
         
         //イメージがフェードイン
         image.alpha = 0.0
@@ -70,6 +83,113 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         if let str = userDefaults.object(forKey: userDefaultsKey) {
             todoArray = str as! [String]    //Any型なのでString型にダウンキャスト
         }
+    }
+    
+    //長押しで編集モード
+    @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
+        let state = sender.state    //状態
+        let location = sender.location(in: self.uiTableView)  //位置
+        
+        guard let indexPath = self.uiTableView.indexPathForRow(at: location) else {
+            cleanup()
+            return
+        }
+        
+        switch state{
+        case .began:
+            sourceIndexPath = indexPath
+            guard let cell = self.uiTableView.cellForRow(at: indexPath) else { return }   //cell作成
+            
+            // Take a snapshot of the selected row using helper method. See below method
+            snapshot = self.customSnapshotFromView(inputView: cell)
+            guard  let snapshot = self.snapshot else { return }
+            
+            var center = cell.center
+            snapshot.center = center
+            snapshot.alpha = 0.0
+            self.uiTableView.addSubview(snapshot)
+            
+            UIView.animate(withDuration: 0.25, animations: {
+                center.y = location.y
+                snapshot.center = center
+                snapshot.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                snapshot.alpha = 0.98
+                cell.alpha = 0.0
+            }, completion: { (finished) in
+                cell.isHidden = true
+            })
+            
+        case .changed:
+            guard  let snapshot = self.snapshot else {
+                return
+            }
+            var center = snapshot.center
+            center.y = location.y
+            snapshot.center = center
+            guard let sourceIndexPath = self.sourceIndexPath  else {
+                return
+            }
+            
+            if indexPath != sourceIndexPath {
+                if todoArray.count > indexPath.row && todoArray.count > sourceIndexPath.row{
+                    //listName.countより大きいindexには何もない
+                    swap(&todoArray[indexPath.row], &todoArray[sourceIndexPath.row])
+                    self.uiTableView.moveRow(at: sourceIndexPath, to: indexPath)
+                    self.sourceIndexPath = indexPath
+                }
+            }
+            
+        default:
+            //並べ替えを保存
+            userDefaults.set(todoArray, forKey: userDefaultsKey)
+            userDefaults.synchronize()
+            
+            guard let cell = self.uiTableView.cellForRow(at: indexPath) else {
+                return
+            }
+            guard  let snapshot = self.snapshot else {
+                return
+            }
+            cell.isHidden = false
+            cell.alpha = 0.0
+            
+            UIView.animate(withDuration: 0.25, animations: {
+                snapshot.center = cell.center
+                snapshot.transform = CGAffineTransform.identity
+                snapshot.alpha = 0
+                cell.alpha = 1
+            }, completion: { (finished) in
+                self.cleanup()
+            })
+        }
+    }
+    
+    //cleanup
+    private func cleanup() {
+        self.sourceIndexPath = nil
+        snapshot?.removeFromSuperview()
+        self.snapshot = nil
+        self.uiTableView.reloadData()
+    }
+    
+    //helper
+    private func customSnapshotFromView(inputView: UIView) -> UIView? {
+        UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0)
+        if let CurrentContext = UIGraphicsGetCurrentContext() {
+            inputView.layer.render(in: CurrentContext)
+        }
+        guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
+            UIGraphicsEndImageContext()
+            return nil
+        }
+        UIGraphicsEndImageContext()
+        let snapshot = UIImageView(image: image)
+        snapshot.layer.masksToBounds = false
+        snapshot.layer.cornerRadius = 0
+        snapshot.layer.shadowOffset = CGSize(width: -5, height: 0)
+        snapshot.layer.shadowRadius = 5
+        snapshot.layer.shadowOpacity = 0.4
+        return snapshot
     }
     
     //checkBoxタップ時の動作
@@ -118,8 +238,13 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let todoCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoTableViewCell
         
+//        //cell選択時の背景色を変更する
+//        let selectedView = UIView()
+//        selectedView.backgroundColor = UIColor(hex: "757575")
+//        todoCell.selectedBackgroundView =  selectedView
+        
         todoCell.delegate = self
-        todoCell.selectedBackgroundView = createSelectedBackgroundView()
+       // todoCell.selectedBackgroundView = createSelectedBackgroundView()
         
         //変数の中身を作る
         todoCell.todoTextCell?.text = todoArray[indexPath.row]

@@ -230,6 +230,11 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
                 }
             
             default:
+                // データ保存
+                let data: Data = NSKeyedArchiver.archivedData(withRootObject: listName) //Data型にシリアライズする
+                userDefaults.set(data, forKey: "list")   // UserDefautlsに保存
+                userDefaults.synchronize()
+                
                 guard let cell = self.tableView.cellForRow(at: indexPath) else {
                     return
                 }
