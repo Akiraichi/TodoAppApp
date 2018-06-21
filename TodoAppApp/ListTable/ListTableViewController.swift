@@ -102,9 +102,9 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
         // ToDoの配列に入力値を挿入。先頭に挿入する
         let myTodo = MyList()
         myTodo.listTitle = inputText
-        self.listName.insert(myTodo, at: 0)
+        self.listName.append(myTodo)
         // テーブルに行が追加されたことをテーブルに通知
-        self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
+        self.tableView.insertRows(at: [IndexPath(row: listName.count-1, section: 0)], with: UITableViewRowAnimation.right)
         
         // ToDoの保存処理
         let userDefaults = UserDefaults.standard
