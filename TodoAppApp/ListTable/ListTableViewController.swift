@@ -9,7 +9,7 @@
 import UIKit
 import SwipeCellKit
 
-class ListTableViewController: UITableViewController {
+class ListTableViewController: UITableViewController, UITextFieldDelegate {
     
     //動的な並び替えのため
     fileprivate var sourceIndexPath: IndexPath?     //save index path of tableview cell, where gesture begins
@@ -18,13 +18,15 @@ class ListTableViewController: UITableViewController {
     //list
    fileprivate var todoList = [String]()
     
+  
+    
     // ToDoを格納した配列
    fileprivate var listName = [MyList]()
     let userDefaults = UserDefaults.standard
     
     var editButton :UIBarButtonItem?
     @IBOutlet weak var listTableView: UITableView!
-
+    
     //letで宣言のみすることができなかったので冗長になっている。将来的に修正予定
     var longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ListTableViewController.longPressHandler(_:)))
     
@@ -82,51 +84,38 @@ class ListTableViewController: UITableViewController {
         }
     }
     
-    // +ボタンをタップしたときに呼ばれる処理
-    @IBAction func tapAddButton(_ sender: Any) {
-        // アラートダイアログを生成
-        let alertController = UIAlertController(title: "リスト追加", message: "リスト名を入力してください", preferredStyle: UIAlertControllerStyle.alert)
-        // テキストエリアを追加
-        alertController.addTextField(configurationHandler: nil)
-        
-        // OKボタンがタップされた時の処理
-        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
-            // OKボタンがタップされた時の処理
-            if let textField = alertController.textFields?.first {
-                //textプロパティに値が存在するかチェック
-                guard let inputText = textField.text else{
-                    return
-                }
-                //入力された文字が1文字以上かチェック
-                guard inputText.lengthOfBytes(using: String.Encoding.utf8) > 0 else{
-                    return
-                }
-                
-                // ToDoの配列に入力値を挿入。先頭に挿入する
-                let myTodo = MyList()
-                myTodo.listTitle = inputText
-                self.listName.insert(myTodo, at: 0)
-                
-                // テーブルに行が追加されたことをテーブルに通知
-                self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
-                
-                // ToDoの保存処理
-                let userDefaults = UserDefaults.standard
-                
-                // Data型にシリアライズする
-                let data = NSKeyedArchiver.archivedData(withRootObject: self.listName)
-                userDefaults.set(data, forKey: "list")
-                userDefaults.synchronize()
-            }
-        }
-        alertController.addAction(okAction) // OKボタンを追加
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return false
+    }
     
-        // CANCELボタンがタップされた時の処理
-        let cancelButton = UIAlertAction(title: "CANCEL", style: UIAlertActionStyle.cancel, handler: nil)
-        alertController.addAction(cancelButton)  // CANCELボタンを追加
+    //textFieldの入力後
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        //textプロパティに値が存在するかチェック
+        guard let inputText = textField.text else{
+            return
+        }
+        //入力された文字が1文字以上かチェック
+        guard inputText.lengthOfBytes(using: String.Encoding.utf8) > 0 else{
+            return
+        }
+        // ToDoの配列に入力値を挿入。先頭に挿入する
+        let myTodo = MyList()
+        myTodo.listTitle = inputText
+        self.listName.insert(myTodo, at: 0)
+        // テーブルに行が追加されたことをテーブルに通知
+        self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
         
-        // アラートダイアログを表示
-        present(alertController, animated: true, completion: nil)
+        // ToDoの保存処理
+        let userDefaults = UserDefaults.standard
+        
+        // Data型にシリアライズする
+        let data = NSKeyedArchiver.archivedData(withRootObject: self.listName)
+        userDefaults.set(data, forKey: "list")
+        userDefaults.synchronize()
+        
+        //textFieldの文字を消しておく
+        textField.text = ""
     }
     
     // MARK: - Table view data source
@@ -148,6 +137,7 @@ class ListTableViewController: UITableViewController {
         //リスト名を入力するためのセル
         if indexPath.row == listName.count{
             let cell = tableView.dequeueReusableCell(withIdentifier: "inputCell", for: indexPath) as! InputTableViewCell
+            cell.listInputTextView.delegate = self
             return cell
         }
         
