@@ -10,6 +10,8 @@ import UIKit
 
 class InputTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var listInputTextView:UITextField!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

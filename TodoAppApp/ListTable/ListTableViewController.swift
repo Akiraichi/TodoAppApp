@@ -40,17 +40,17 @@ class ListTableViewController: UITableViewController {
             }
         }
         
-        
         //長押しジェスチャーの追加
         longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ListTableViewController.longPressHandler(_:)))
         longPressGesture.minimumPressDuration = 0.5
         longPressGesture.numberOfTapsRequired = 0
         longPressGesture.numberOfTouchesRequired = 1
-        self.view.addGestureRecognizer(longPressGesture)
+        self.tableView.addGestureRecognizer(longPressGesture)
         
         // ナビゲーションアイテムの右側に編集ボタンを設置
         editButton = UIBarButtonItem(title: "編集", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ListTableViewController.selToEdit(_:)))
         self.navigationItem.rightBarButtonItem = editButton
+        
     }
     
     //テーブル全体の編集の可否を指定する
@@ -138,16 +138,19 @@ class ListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return listName.count
+        return listName.count+1
     }
 
     // テーブルの行ごとのセルを返却する
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath) as! ListTableViewCell
         
-        //リスト名入力してもらうためのセル
-        let inputCell = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath) as! ListTableViewCell
-        // 行番号に合ったToDoの情報を取得
+        //リスト名を入力するためのセル
+        if indexPath.row == listName.count{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "inputCell", for: indexPath) as! InputTableViewCell
+            return cell
+        }
+        
         let myTodo = listName[indexPath.row]
         // セルのラベルにToDoのタイトルをセット
         guard let listTitle = myTodo.listTitle else {
@@ -165,26 +168,19 @@ class ListTableViewController: UITableViewController {
         return cell
     }
     
-    // セルをタップした時の処理
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    }
-    
-    //セルの移動を許可
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool{
-        return true
-    }
-    
-    // テーブルのセルを移動
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath){
-        print("\(fromIndexPath.row)番地から\(to.row)番地に移動しました")
-    }
+//    // セルをタップした時の処理
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//    }
     
     //長押しで編集モード
     @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
         let state = sender.state    //状態
         let location = sender.location(in: self.tableView)  //位置
         
-        guard let indexPath = self.tableView.indexPathForRow(at: location) else { return }   //その場所がnilの場合に備える
+        guard let indexPath = self.tableView.indexPathForRow(at: location) else {
+            cleanup()
+            return
+        }
         
         switch state{
             case .began:
@@ -220,11 +216,14 @@ class ListTableViewController: UITableViewController {
                 guard let sourceIndexPath = self.sourceIndexPath  else {
                     return
                 }
+                
                 if indexPath != sourceIndexPath {
-                    swap(&listName[indexPath.row], &listName[sourceIndexPath.row])
-                    
-                    self.tableView.moveRow(at: sourceIndexPath, to: indexPath)
-                    self.sourceIndexPath = indexPath
+                    if listName.count > indexPath.row && listName.count > sourceIndexPath.row{
+                        //listName.countより大きいindexには何もない
+                        swap(&listName[indexPath.row], &listName[sourceIndexPath.row])
+                        self.tableView.moveRow(at: sourceIndexPath, to: indexPath)
+                        self.sourceIndexPath = indexPath
+                    }
                 }
             
             default:
@@ -292,7 +291,8 @@ class ListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         if tableView.isEditing  {
             return UITableViewCellEditingStyle.delete
-        }else{
+        }
+        else{
             return UITableViewCellEditingStyle.none
         }
     }
