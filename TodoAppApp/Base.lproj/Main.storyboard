@@ -30,7 +30,7 @@
                                     <segue destination="BYZ-38-t0r" kind="show" id="RgF-uQ-GY8"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="inputCell" id="fgE-Rk-VAZ" customClass="InputTableViewCell" customModule="TodoAppApp" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="inputCell" id="fgE-Rk-VAZ" customClass="InputTableViewCell" customModule="TodoAppApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="88" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fgE-Rk-VAZ" id="qqa-4f-ITi">
@@ -55,19 +55,17 @@
                             <outlet property="dataSource" destination="EK4-zB-W19" id="auF-9n-lbf"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="UxA-6M-Va8">
-                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="mCd-Fx-4oL">
-                            <connections>
-                                <action selector="tapAddButton:" destination="EK4-zB-W19" id="qb2-q2-jMY"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="UxA-6M-Va8"/>
                     <connections>
                         <outlet property="listTableView" destination="acX-nm-4Kd" id="jOz-jQ-5Nk"/>
-                        <outlet property="plusBarButtonItem" destination="mCd-Fx-4oL" id="KAk-xP-V0g"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UwE-89-rAk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="u2F-sd-6b6">
+                    <connections>
+                        <action selector="tapView:" destination="EK4-zB-W19" id="b1R-RT-aBO"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1002.4" y="119.1904047976012"/>
         </scene>

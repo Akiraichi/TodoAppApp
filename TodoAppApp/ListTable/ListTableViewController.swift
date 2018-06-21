@@ -30,7 +30,6 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
     //letで宣言のみすることができなかったので冗長になっている。将来的に修正予定
     var longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ListTableViewController.longPressHandler(_:)))
     
-    @IBOutlet weak var plusBarButtonItem: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +47,11 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
         longPressGesture.numberOfTapsRequired = 0
         longPressGesture.numberOfTouchesRequired = 1
         self.tableView.addGestureRecognizer(longPressGesture)
+        
+        //tapGesrueとして追加。
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapView(_:)))
+        tapGesture.cancelsTouchesInView = false
+        self.tableView.addGestureRecognizer(tapGesture)
         
         // ナビゲーションアイテムの右側に編集ボタンを設置
         editButton = UIBarButtonItem(title: "編集", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ListTableViewController.selToEdit(_:)))
@@ -84,9 +88,16 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
+    //returnキーでキーボード下がる
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
         return false
+    }
+    
+    //singleタップ時のアクション
+    @objc func tapView(_ sender: UITapGestureRecognizer) {
+        //キーボードを閉じる。
+        view.endEditing(true)
     }
     
     //textFieldの入力後
@@ -102,6 +113,8 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
         // ToDoの配列に入力値を挿入。先頭に挿入する
         let myTodo = MyList()
         myTodo.listTitle = inputText
+        
+        //新しいものほど下に来るようにした
         self.listName.append(myTodo)
         // テーブルに行が追加されたことをテーブルに通知
         self.tableView.insertRows(at: [IndexPath(row: listName.count-1, section: 0)], with: UITableViewRowAnimation.right)
@@ -265,18 +278,18 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
         return snapshot
     }
     
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        // テーブルの編集中はバックボタンを表示しない
-        if editing{
-            plusBarButtonItem.isEnabled = false
-            plusBarButtonItem.tintColor = UIColor(white: 0, alpha: 0)
-        } else {
-            plusBarButtonItem.isEnabled = true
-            plusBarButtonItem.tintColor = UIColor(white: 1, alpha: 1)
-        }
-        super.setEditing(editing, animated: animated)
-    }
-    
+//    override func setEditing(_ editing: Bool, animated: Bool) {
+//        // テーブルの編集中はバックボタンを表示しない
+//        if editing{
+//            plusBarButtonItem.isEnabled = false
+//            plusBarButtonItem.tintColor = UIColor(white: 0, alpha: 0)
+//        } else {
+//            plusBarButtonItem.isEnabled = true
+//            plusBarButtonItem.tintColor = UIColor(white: 1, alpha: 1)
+//        }
+//        super.setEditing(editing, animated: animated)
+//    }
+//    
     //テーブルの編集形式を設定
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         if tableView.isEditing  {
