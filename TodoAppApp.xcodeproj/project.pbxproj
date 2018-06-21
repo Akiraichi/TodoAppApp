@@ -64,6 +64,7 @@
 		85300DB720D4FF640027378E /* ListTable */ = {
 			isa = PBXGroup;
 			children = (
+				85700F0820DBAE0A00E8829D /* InputTableViewCell.swift */,
 				85300DB520D4FECE0027378E /* ListTableViewCell.swift */,
 				85300DB320D4FE120027378E /* ListTableViewController.swift */,
 				8543E1CF20D90DB500434340 /* File.swift */,
@@ -105,7 +106,6 @@
 				854DF18F20C95A5800F2E51C /* AppDelegate.swift */,
 				85300DB820D4FF7D0027378E /* Todo */,
 				854DF19320C95A5800F2E51C /* Main.storyboard */,
-				85700F0820DBAE0A00E8829D /* InputTableViewCell.swift */,
 				85300DB720D4FF640027378E /* ListTable */,
 				854DF19620C95A5A00F2E51C /* Assets.xcassets */,
 				854DF19820C95A5A00F2E51C /* LaunchScreen.storyboard */,

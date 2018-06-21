@@ -97,7 +97,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         userDefaults.set( todoArray, forKey: userDefaultsKey )
         userDefaults.synchronize()
         
-        view.endEditing(true)   //キーボード閉じる
     }
     
     //通知処理。ただし書きかけ
@@ -135,10 +134,16 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         view.endEditing(true)
     }
     
-    //???_ textFieldにしなかったらenterでキーボードが下がらない＝メソッドが呼び出されなかった。なぜ？
     //Returnキー押下時の呼び出しメソッド
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        //キーボードを閉じる。
+        //キーボードを閉じる。ただし、入力文字があった場合はキーボードを下げない
+        if let text = textField.text{
+            if text.lengthOfBytes(using: String.Encoding.utf8) > 0 {
+                okTButtonTaped(textField)
+                return false
+            }
+        }
+        okTButtonTaped(textField)
         view.endEditing(true)
         return false
     }
