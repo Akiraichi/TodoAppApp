@@ -152,6 +152,7 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
         if indexPath.row == listName.count{
             let cell = tableView.dequeueReusableCell(withIdentifier: "inputCell", for: indexPath) as! InputTableViewCell
             cell.listInputTextView.delegate = self
+            cell.listInputTextView.attributedPlaceholder = NSAttributedString(string: "リストを作成", attributes: [NSAttributedStringKey.foregroundColor : UIColor(hex: "74B7F6")])//色を変える
             return cell
         }
         
