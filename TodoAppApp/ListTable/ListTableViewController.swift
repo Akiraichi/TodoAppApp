@@ -325,6 +325,9 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
             userDefaults.synchronize()
         }
     }
+    
+    
+    
 }
 
     // NSCodingプロトコルに準拠する必要がある

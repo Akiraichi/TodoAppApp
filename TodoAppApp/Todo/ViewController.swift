@@ -57,20 +57,20 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         longPressGesture.numberOfTouchesRequired = 1
         self.uiTableView.addGestureRecognizer(longPressGesture)
         
-        //イメージがフェードイン
-        image.alpha = 0.0
-        UIView.animate(withDuration: 2.0, delay: 1.0, options: [.curveEaseIn], animations: {
-            self.image.alpha = 1.0
-        }, completion: nil)
-        //イメージがジャンプ
-        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseIn, .autoreverse, .repeat], animations: {
-            self.image.center.y += 100.0
-        }) { _ in
-            self.image.center.y -= 100.0
-        }
-        //imageを下に移動
-        let transScale = CGAffineTransform(translationX: 0, y: 400)
-        image.transform = transScale
+//        //イメージがフェードイン
+//        image.alpha = 0.0
+//        UIView.animate(withDuration: 2.0, delay: 1.0, options: [.curveEaseIn], animations: {
+//            self.image.alpha = 1.0
+//        }, completion: nil)
+//        //イメージがジャンプ
+//        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseIn, .autoreverse, .repeat], animations: {
+//            self.image.center.y += 100.0
+//        }) { _ in
+//            self.image.center.y -= 100.0
+//        }
+//        //imageを下に移動
+//        let transScale = CGAffineTransform(translationX: 0, y: 400)
+//        image.transform = transScale
         
         //notificationの登録
         let center = NotificationCenter.default

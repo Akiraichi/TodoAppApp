@@ -80,7 +80,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eqN-j8-dw3">
                                 <rect key="frame" x="0.0" y="149" width="375" height="518"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="deviceRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="R8D-KQ-fyv" customClass="TodoTableViewCell" customModule="TodoAppApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="60"/>
@@ -107,7 +107,7 @@
                                                 </button>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="deviceRGB"/>
                                         <connections>
                                             <outlet property="checkBox" destination="iX5-FF-tra" id="Ufd-W7-dyy"/>
                                             <outlet property="todoTextCell" destination="6rb-eU-9hB" id="bTo-DY-OFy"/>
@@ -133,12 +133,8 @@
                                     <action selector="okTButtonTaped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="g6b-9F-Sst"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="iamge_penguin.png" translatesAutoresizingMaskIntoConstraints="NO" id="ek8-Zv-W6F">
-                                <rect key="frame" x="274" y="135" width="101" height="78"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="deviceRGB"/>
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <connections>
@@ -148,7 +144,6 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="image" destination="ek8-Zv-W6F" id="QPg-Op-1hv"/>
                         <outlet property="singleRecognizer" destination="jig-RF-h6l" id="fIt-xB-Tk8"/>
                         <outlet property="todoText" destination="Nx8-0U-DQp" id="jZF-0J-6a9"/>
                         <outlet property="uiTableView" destination="eqN-j8-dw3" id="7sC-Uw-vFx"/>
@@ -182,7 +177,4 @@
             <point key="canvasLocation" x="63.200000000000003" y="119.1904047976012"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="iamge_penguin.png" width="600" height="600"/>
-    </resources>
 </document>
