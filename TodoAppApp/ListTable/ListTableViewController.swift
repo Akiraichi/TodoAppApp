@@ -200,7 +200,7 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
                 snapshot.alpha = 0.0
                 self.tableView.addSubview(snapshot)
                 
-                TapticEngine.impact.prepare(.heavy)
+                TapticEngine.impact.prepare(.medium)
                 
                 UIView.animate(withDuration: 0.25, animations: {
                     center.y = location.y
@@ -211,7 +211,7 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
                 }, completion: { (finished) in
                     cell.isHidden = true
                 })
-                TapticEngine.impact.feedback(.heavy)
+                TapticEngine.impact.feedback(.medium)
             
             
             
@@ -230,7 +230,7 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
                     if listName.count > indexPath.row && listName.count > sourceIndexPath.row{
                         //listName.countより大きいindexには何もない
                         swap(&listName[indexPath.row], &listName[sourceIndexPath.row])
-                        TapticEngine.impact.feedback(.heavy)
+                        TapticEngine.impact.feedback(.medium)
                         self.tableView.moveRow(at: sourceIndexPath, to: indexPath)
                         self.sourceIndexPath = indexPath
                     }

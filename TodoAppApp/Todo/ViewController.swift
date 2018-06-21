@@ -111,7 +111,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             self.uiTableView.addSubview(snapshot)
             
             //tapic prepare
-            TapticEngine.impact.prepare(.heavy)
+            TapticEngine.impact.prepare(.medium)
             
             UIView.animate(withDuration: 0.25, animations: {
                 center.y = location.y
@@ -122,7 +122,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             }, completion: { (finished) in
                 cell.isHidden = true
             })
-            TapticEngine.impact.feedback(.heavy)
+            TapticEngine.impact.feedback(.medium)
             
         case .changed:
             guard  let snapshot = self.snapshot else {
