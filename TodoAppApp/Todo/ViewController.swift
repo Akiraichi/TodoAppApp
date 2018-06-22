@@ -201,6 +201,20 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     //checkBoxタップ時の動作
     @IBAction func checkBox(_ sender: CheckBox) {
+        var cell = sender.superview?.superview as! TodoTableViewCell
+        guard let indexPath = uiTableView.indexPath(for: cell) else {
+            return
+        }
+        cell = tableView(uiTableView, cellForRowAt: indexPath) as! TodoTableViewCell
+        let todoList = todoArray[indexPath.row]
+        if cell.checkBox.isChecked{
+            todoList.todoDone = false
+        }else{
+            todoList.todoDone = true
+        }
+        let data = NSKeyedArchiver.archivedData(withRootObject: todoArray)
+        userDefaults.set(data, forKey: userDefaultsKey)
+        userDefaults.synchronize()
         print(sender.isChecked)
         
     }
@@ -261,8 +275,10 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //セルのチェックマークを設定
         if todoList.todoDone{
             todoCell.checkBox.isChecked = true
+            todoCell.todoTextCell.textColor = UIColor(hex: "000000", alpha: 0.3)
         }else{
             todoCell.checkBox.isChecked = false
+            todoCell.todoTextCell.textColor = UIColor.black
         }
 
         return todoCell

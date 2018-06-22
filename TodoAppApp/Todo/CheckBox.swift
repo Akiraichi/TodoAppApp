@@ -23,7 +23,7 @@ class CheckBox: UIButton {
         //touch up insideでbuttonClickdが呼び出されれる
         self.addTarget(self, action:#selector(buttonClicked(sender:)), for: UIControlEvents.touchUpInside)
         //ボタンの初期値はfalse
-        self.isChecked = false
+        //self.isChecked = false
     }
     
     //ボタンがクリックされたらcheck状態を逆にする
