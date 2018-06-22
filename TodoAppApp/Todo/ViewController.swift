@@ -294,6 +294,15 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     func textViewDidBeginEditing(_ textField: UITextView) {
     }
+
+    //テキストビューでreturn押したらキーボードとじる
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            view.endEditing(true)
+            return false
+        }
+        return true
+    }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         //textプロパティに値が存在するかチェック
