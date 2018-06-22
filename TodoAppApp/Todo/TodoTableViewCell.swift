@@ -59,7 +59,7 @@ class TodoTableViewCell: SwipeTableViewCell {
         }
     }
     
-    @IBOutlet weak var todoTextCell: UITextField!
+    @IBOutlet weak var todoTextCell: UITextView!
     @IBOutlet weak var checkBox: CheckBox!
    // var strikeOn:Bool = false
     

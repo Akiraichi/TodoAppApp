@@ -10,7 +10,7 @@ import UIKit
 import SwipeCellKit
 import TapticEngine
 
-class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate {
+class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var uiTableView: UITableView!
     @IBOutlet weak var todoText: UITextField!   //Todo入れるテキストフィールド
@@ -24,7 +24,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     var defaultOptions = SwipeOptions() //右スワイプを許可する
     var isSwipeRightEnabled = true      //displayモードをimageモードにする
     var buttonDisplayMode: ButtonDisplayMode = .imageOnly
-    var buttonStyle: ButtonStyle = .circular //imageButtonをcirculerにする
+    var buttonStyle: ButtonStyle = .backgroundColor //imageButtonをcirculerにする
     var usesTallCells = false   //cellの高さを通常にする
     
     //penguin_imageを入れるイメージビュー
@@ -291,6 +291,36 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //キーボードを閉じる。
         view.endEditing(true)
     }
+    
+    func textViewDidBeginEditing(_ textField: UITextView) {
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        //textプロパティに値が存在するかチェック
+        guard let inputText = textView.text else{
+            return
+        }
+        //入力された文字が1文字以上かチェック
+        guard inputText.lengthOfBytes(using: String.Encoding.utf8) > 0 else{
+            return
+        }
+        
+        //indexpathを入手
+        let cell = textView.superview?.superview as! TodoTableViewCell
+        guard let indexPath = uiTableView.indexPath(for: cell) else {
+            return
+        }
+        //textを更新
+        let todoList = todoArray[indexPath.row]
+        todoList.todoTitle = inputText
+        
+        // ToDoの保存処理
+        let userDefaults = UserDefaults.standard
+        let data = NSKeyedArchiver.archivedData(withRootObject: todoArray)
+        userDefaults.set(data, forKey: userDefaultsKey)
+        userDefaults.synchronize()
+    }
+    
     
     //Returnキー押下時の呼び出しメソッド
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
