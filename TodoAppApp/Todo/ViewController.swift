@@ -110,6 +110,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             
             //tapic prepare
             TapticEngine.impact.prepare(.medium)
+            TapticEngine.impact.prepare(.light)
             
             UIView.animate(withDuration: 0.25, animations: {
                 center.y = location.y
@@ -137,7 +138,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                 if todoArray.count > indexPath.row && todoArray.count > sourceIndexPath.row{
                     //listName.countより大きいindexには何もない
                     swap(&todoArray[indexPath.row], &todoArray[sourceIndexPath.row])
-                    TapticEngine.impact.feedback(.medium)    //触覚フィードバック
+                    TapticEngine.impact.feedback(.light)    //触覚フィードバック
                     
                     self.uiTableView.moveRow(at: sourceIndexPath, to: indexPath)
                     self.sourceIndexPath = indexPath
