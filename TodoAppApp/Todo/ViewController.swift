@@ -244,7 +244,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let todoCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoTableViewCell
-        todoCell.checkBox.isChecked = false //セル再利用に備えて、リセットする
+        //todoCell.checkBox.isChecked = false //セル再利用に備えて、リセットする
         
 //        //cell選択時の背景色を変更する
 //        let selectedView = UIView()
@@ -311,6 +311,8 @@ extension ViewController: SwipeTableViewCellDelegate {
         }
             //左スワイプ
         else {
+            let cell = self.uiTableView.cellForRow(at: indexPath) as! TodoTableViewCell
+            
             let flag = SwipeAction(style: .default, title: nil, handler: nil)
             flag.hidesWhenSelected = true
             configure(action: flag, with: .flag)
@@ -318,6 +320,9 @@ extension ViewController: SwipeTableViewCellDelegate {
             let delete = SwipeAction(style: .destructive, title: nil) { action, indexPath in (
                 //todoArrayから削除
                 self.todoArray.remove(at: indexPath.row),
+                cell.checkBox.isChecked = false,
+                cell.todoTextCell.textColor = UIColor.black,
+                
                 //userDefaultsの更新
                 self.userDefaults.set(self.todoArray, forKey: self.userDefaultsKey),
                 self.userDefaults.synchronize()
@@ -325,7 +330,7 @@ extension ViewController: SwipeTableViewCellDelegate {
             }
             configure(action: delete, with: .trash)
             
-            let cell = tableView.cellForRow(at: indexPath) as! TodoTableViewCell
+           // let cell = tableView.cellForRow(at: indexPath) as! TodoTableViewCell
             let closure: (UIAlertAction) -> Void = { _ in cell.hideSwipe(animated: true) }
             let more = SwipeAction(style: .default, title: nil) { action, indexPath in
                 let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)

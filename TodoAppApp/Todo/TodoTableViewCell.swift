@@ -72,9 +72,9 @@ class TodoTableViewCell: SwipeTableViewCell {
             guard let todoText = todoTextCell.text else{
                 return
             }
-            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: todoText)
-            attributeString.addAttribute(NSAttributedStringKey.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
-            self.todoTextCell.attributedText=attributeString
+//            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: todoText)
+//            attributeString.addAttribute(NSAttributedStringKey.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
+//            self.todoTextCell.attributedText=attributeString
             
             //textcolorを変更する
             todoTextCell.textColor=UIColor(hex: "000000", alpha: 0.3)
@@ -82,9 +82,9 @@ class TodoTableViewCell: SwipeTableViewCell {
             strikeOn=true
             
         }else{
-            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: todoTextCell.text!)
-            attributeString.addAttribute(NSAttributedStringKey.strikethroughStyle, value: 0, range: NSMakeRange(0, attributeString.length))
-            self.todoTextCell.attributedText=attributeString
+//            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: todoTextCell.text!)
+//            attributeString.addAttribute(NSAttributedStringKey.strikethroughStyle, value: 0, range: NSMakeRange(0, attributeString.length))
+//            self.todoTextCell.attributedText=attributeString
            
             //textColorを戻す
             todoTextCell.textColor=UIColor(hex: "000000", alpha: 1.0)
@@ -95,12 +95,7 @@ class TodoTableViewCell: SwipeTableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-//        //元々入っているセルの情報をリセット
-//        todoTextCell.text = ""
-//        if checkBox.isChecked{
-//          checkBox.isChecked = false
-//        }
-//        strikeOn=false
+        
     }
     
     override func awakeFromNib() {
