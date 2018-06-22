@@ -224,7 +224,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //保存処理
         userDefaults.set( todoArray, forKey: userDefaultsKey )
         userDefaults.synchronize()
-        
     }
     
     //通知処理。ただし書きかけ
@@ -245,6 +244,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let todoCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoTableViewCell
+        todoCell.checkBox.isChecked = false //セル再利用に備えて、リセットする
         
 //        //cell選択時の背景色を変更する
 //        let selectedView = UIView()
@@ -319,7 +319,8 @@ extension ViewController: SwipeTableViewCellDelegate {
                 //todoArrayから削除
                 self.todoArray.remove(at: indexPath.row),
                 //userDefaultsの更新
-                self.userDefaults.set(self.todoArray, forKey: self.userDefaultsKey)
+                self.userDefaults.set(self.todoArray, forKey: self.userDefaultsKey),
+                self.userDefaults.synchronize()
                 )
             }
             configure(action: delete, with: .trash)

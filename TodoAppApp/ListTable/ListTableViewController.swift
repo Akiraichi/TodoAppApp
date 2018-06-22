@@ -305,16 +305,20 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
 //    
     //テーブルの編集形式を設定
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        if tableView.isEditing  {
+        
+        // 最後のセルは挿入
+        if listName.count == indexPath.row {
+            return UITableViewCellEditingStyle.none
+        }else{
             return UITableViewCellEditingStyle.delete
         }
-        else{
-            return UITableViewCellEditingStyle.none
-        }
+        
+       
     }
     
     // セルが編集可能であるかどうかを返却する
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        
         return true
     }
     

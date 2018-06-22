@@ -1,5 +1,6 @@
 import UIKit
 
+
 class CheckBox: UIButton {
     // Images
     let checkedImage = UIImage(named: "ico_check_on")! as UIImage
@@ -7,7 +8,7 @@ class CheckBox: UIButton {
     
     // isCheckの値によってsetするイメージを変更
     //プロパティの変更前/後で処理を実行
-    var isChecked: Bool = false {
+    public var isChecked = false{
         didSet{
             if isChecked == true {
                 self.setImage(checkedImage, for: UIControlState.normal)

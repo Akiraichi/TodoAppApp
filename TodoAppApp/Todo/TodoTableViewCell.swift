@@ -65,13 +65,11 @@ class TodoTableViewCell: SwipeTableViewCell {
     
     
     @IBAction func checkBoxAct(_ sender: Any) {
-        if !strikeOn{
+        if !checkBox.isChecked{
             guard let todoTextCell = todoTextCell else{
-                print("エラー2")
                 return
             }
             guard let todoText = todoTextCell.text else{
-                print("エラー1")
                 return
             }
             let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: todoText)
@@ -79,7 +77,7 @@ class TodoTableViewCell: SwipeTableViewCell {
             self.todoTextCell.attributedText=attributeString
             
             //textcolorを変更する
-            todoTextCell.textColor=UIColor(hex: "ccd1d2")
+            todoTextCell.textColor=UIColor(hex: "000000", alpha: 0.3)
             //取り消し線を加える
             strikeOn=true
             
@@ -89,16 +87,20 @@ class TodoTableViewCell: SwipeTableViewCell {
             self.todoTextCell.attributedText=attributeString
            
             //textColorを戻す
-            todoTextCell.textColor=UIColor(hex: "000000")
+            todoTextCell.textColor=UIColor(hex: "000000", alpha: 1.0)
             //取り消し線を消す
             strikeOn=false
         }
     }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
-        //元々入っているセルの情報をリセット
-        todoTextCell=nil
-        strikeOn=false
+//        //元々入っているセルの情報をリセット
+//        todoTextCell.text = ""
+//        if checkBox.isChecked{
+//          checkBox.isChecked = false
+//        }
+//        strikeOn=false
     }
     
     override func awakeFromNib() {
