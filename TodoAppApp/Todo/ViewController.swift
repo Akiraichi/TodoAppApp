@@ -137,7 +137,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                 if todoArray.count > indexPath.row && todoArray.count > sourceIndexPath.row{
                     //listName.countより大きいindexには何もない
                     swap(&todoArray[indexPath.row], &todoArray[sourceIndexPath.row])
-                    TapticEngine.impact.feedback(.heavy)    //触覚フィードバック
+                    TapticEngine.impact.feedback(.medium)    //触覚フィードバック
                     
                     self.uiTableView.moveRow(at: sourceIndexPath, to: indexPath)
                     self.sourceIndexPath = indexPath
@@ -220,7 +220,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
     }
     
-    //「リストを追加セル」でリストを追加する
+    
     @IBAction func okTButtonTaped(_ sender: Any) {
         //textプロパティに値が存在するかチェック
         guard let inputText = todoText.text else{
@@ -370,7 +370,7 @@ extension ViewController: SwipeTableViewCellDelegate {
             }
             configure(action: more, with: .more)
             
-            return [delete, flag, more]
+            return [delete]
         }
     }
     

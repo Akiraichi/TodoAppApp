@@ -101,7 +101,10 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
     
-    //textFieldの入力後
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        TapticEngine.impact.prepare(.light)
+    }
+    //「リストを追加セル」でリストを追加する
     func textFieldDidEndEditing(_ textField: UITextField) {
         //textプロパティに値が存在するかチェック
         guard let inputText = textField.text else{
@@ -128,6 +131,9 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
         userDefaults.set(data, forKey: "list")
         userDefaults.synchronize()
         
+        //触覚フィードバック
+        TapticEngine.impact.feedback(.light)
+        
         //textFieldの文字を消しておく
         textField.text = ""
     }
@@ -147,7 +153,7 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
     // テーブルの行ごとのセルを返却する
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath) as! ListTableViewCell
-        
+
         //リスト名を入力するためのセル
         if indexPath.row == listName.count{
             let cell = tableView.dequeueReusableCell(withIdentifier: "inputCell", for: indexPath) as! InputTableViewCell
@@ -305,15 +311,12 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
 //    
     //テーブルの編集形式を設定
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        
         // 最後のセルは挿入
         if listName.count == indexPath.row {
             return UITableViewCellEditingStyle.none
         }else{
             return UITableViewCellEditingStyle.delete
         }
-        
-       
     }
     
     // セルが編集可能であるかどうかを返却する
