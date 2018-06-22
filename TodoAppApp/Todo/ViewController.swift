@@ -207,6 +207,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
         cell = tableView(uiTableView, cellForRowAt: indexPath) as! TodoTableViewCell
         let todoList = todoArray[indexPath.row]
+        //セルの生成時に文字の色を設定
         if cell.checkBox.isChecked{
             todoList.todoDone = false
         }else{
@@ -272,7 +273,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         let todoList = todoArray[indexPath.row]
         todoCell.todoTextCell?.text = todoList.todoTitle
         
-        //セルのチェックマークを設定
+        //セルのチェックマークを設定。セルのテキスト職を設定
         if todoList.todoDone{
             todoCell.checkBox.isChecked = true
             todoCell.todoTextCell.textColor = UIColor(hex: "000000", alpha: 0.3)

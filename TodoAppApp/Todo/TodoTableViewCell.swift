@@ -61,7 +61,7 @@ class TodoTableViewCell: SwipeTableViewCell {
     
     @IBOutlet weak var todoTextCell: UITextField!
     @IBOutlet weak var checkBox: CheckBox!
-    var strikeOn:Bool = false
+   // var strikeOn:Bool = false
     
     
     @IBAction func checkBoxAct(_ sender: Any) {
@@ -80,7 +80,7 @@ class TodoTableViewCell: SwipeTableViewCell {
             //textcolorを変更する
             todoTextCell.textColor=UIColor(hex: "000000", alpha: 0.3)
             //取り消し線を加える
-            strikeOn=true
+           // strikeOn=true
             
         }else{
 //            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: todoTextCell.text!)
@@ -90,7 +90,7 @@ class TodoTableViewCell: SwipeTableViewCell {
             //textColorを戻す
             todoTextCell.textColor=UIColor(hex: "000000", alpha: 1.0)
             //取り消し線を消す
-            strikeOn=false
+           // strikeOn=false
         }
     }
     
