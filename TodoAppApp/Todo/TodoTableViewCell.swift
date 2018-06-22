@@ -66,12 +66,13 @@ class TodoTableViewCell: SwipeTableViewCell {
     
     @IBAction func checkBoxAct(_ sender: Any) {
         if !checkBox.isChecked{
-            guard let todoTextCell = todoTextCell else{
-                return
-            }
-            guard let todoText = todoTextCell.text else{
-                return
-            }
+            //取り消し線
+//            guard let todoTextCell = todoTextCell else{
+//                return
+//            }
+//            guard let todoText = todoTextCell.text else{
+//                return
+//            }
 //            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: todoText)
 //            attributeString.addAttribute(NSAttributedStringKey.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
 //            self.todoTextCell.attributedText=attributeString
@@ -95,23 +96,15 @@ class TodoTableViewCell: SwipeTableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        // Initialization code
     }
 
-   
-    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
-
 }
 
 //色を変更しやすくする

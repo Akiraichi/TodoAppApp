@@ -13,33 +13,29 @@ import TapticEngine
 class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate {
     
     @IBOutlet weak var uiTableView: UITableView!
-    //Todo入れるテキストフィールド
-    @IBOutlet weak var todoText: UITextField!
+    @IBOutlet weak var todoText: UITextField!   //Todo入れるテキストフィールド
    
-    //動的な並び替えのため
     fileprivate var sourceIndexPath: IndexPath?     //save index path of tableview cell, where gesture begins
     fileprivate var snapshot: UIView?   //to save snapshot of the cell user is moving.
+   
     //letで宣言のみすることができなかったので冗長になっている。将来的に修正予定
     var longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPressHandler(_:)))
     
     var defaultOptions = SwipeOptions() //右スワイプを許可する
-    
     var isSwipeRightEnabled = true      //displayモードをimageモードにする
     var buttonDisplayMode: ButtonDisplayMode = .imageOnly
     var buttonStyle: ButtonStyle = .circular //imageButtonをcirculerにする
     var usesTallCells = false   //cellの高さを通常にする
     
     //penguin_imageを入れるイメージビュー
-    @IBOutlet weak var image: UIImageView!
+    //@IBOutlet weak var image: UIImageView!
     
-    //tap操作のため
-    @IBOutlet var singleRecognizer: UITapGestureRecognizer!
+    @IBOutlet var singleRecognizer: UITapGestureRecognizer!  //tap操作のため
     
-    //空の辞書を作成
-    fileprivate var todoArray = [String]()  //動的並べ替えのため
+    fileprivate var todoArray = [todoListClass]()  //動的並べ替えのため, Todoを格納した配列
+    
     let userDefaults = UserDefaults.standard
-    //UDのキーを設定するための変数
-    var userDefaultsKey: String = ""
+    var userDefaultsKey: String = ""    //UDのキーを設定するための変数
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,21 +68,23 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
 //        //imageを下に移動
 //        let transScale = CGAffineTransform(translationX: 0, y: 400)
 //        image.transform = transScale
+//
+//        //notificationの登録
+//        let center = NotificationCenter.default
+//        center.addObserver(self,
+//                           selector: #selector(self.update),
+//                           name: Notification.Name.UIApplicationWillTerminate,
+//                           object: nil)
         
-        //notificationの登録
-        let center = NotificationCenter.default
-        center.addObserver(self,
-                           selector: #selector(self.update),
-                           name: Notification.Name.UIApplicationWillTerminate,
-                           object: nil)
-        
-        //UDに保存されている値を取得。オプショナルバインディングで書き換えてみた。
-        if let str = userDefaults.object(forKey: userDefaultsKey) {
-            todoArray = str as! [String]    //Any型なのでString型にダウンキャスト
+        //保存しているTodoの読み込み
+        if let storedTodoList = userDefaults.object(forKey: userDefaultsKey) as? Data {
+            if let unarchiveTodlList = NSKeyedUnarchiver.unarchiveObject(with: storedTodoList) as? [todoListClass] {
+                todoArray.append(contentsOf: unarchiveTodlList)
+            }
         }
     }
     
-    //長押しで編集モード
+    //長押しで並べ替え
     @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
         let state = sender.state    //状態
         let location = sender.location(in: self.uiTableView)  //位置
@@ -139,8 +137,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                 if todoArray.count > indexPath.row && todoArray.count > sourceIndexPath.row{
                     //listName.countより大きいindexには何もない
                     swap(&todoArray[indexPath.row], &todoArray[sourceIndexPath.row])
-                    //
-                    TapticEngine.impact.feedback(.heavy)
+                    TapticEngine.impact.feedback(.heavy)    //触覚フィードバック
                     
                     self.uiTableView.moveRow(at: sourceIndexPath, to: indexPath)
                     self.sourceIndexPath = indexPath
@@ -149,7 +146,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             
         default:
             //並べ替えを保存
-            userDefaults.set(todoArray, forKey: userDefaultsKey)
+            let data: Data = NSKeyedArchiver.archivedData(withRootObject: todoArray)
+            userDefaults.set(data, forKey: userDefaultsKey)
             userDefaults.synchronize()
             
             guard let cell = self.uiTableView.cellForRow(at: indexPath) else {
@@ -200,12 +198,14 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         return snapshot
     }
     
+    
     //checkBoxタップ時の動作
     @IBAction func checkBox(_ sender: CheckBox) {
         print(sender.isChecked)
+        
     }
     
-    //OKボタンをタップした時のメソッド
+    //「リストを追加セル」でリストを追加する
     @IBAction func okTButtonTaped(_ sender: Any) {
         //textプロパティに値が存在するかチェック
         guard let inputText = todoText.text else{
@@ -215,15 +215,18 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         guard inputText.lengthOfBytes(using: String.Encoding.utf8) > 0 else{
             return
         }
-
-        todoArray.insert(inputText, at: 0) //入力内容を配列の先頭に入れる
-        todoText.text = ""  //追加ボタンを押したらフィールドを空にする
-        //tableを再生成して、表示を更新
-        self.uiTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.fade)
         
         //保存処理
-        userDefaults.set( todoArray, forKey: userDefaultsKey )
+        let todoList = todoListClass()
+        todoList.todoTitle = inputText
+        todoArray.insert(todoList, at: 0) //入力内容を配列の先頭に入れる
+        let data = NSKeyedArchiver.archivedData(withRootObject: todoArray)
+        userDefaults.set(data, forKey: userDefaultsKey)
         userDefaults.synchronize()
+        
+        //tableを再生成して、表示を更新
+        self.uiTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.fade)
+        todoText.text = ""  //フィールドを空にする
     }
     
     //通知処理。ただし書きかけ
@@ -244,20 +247,24 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let todoCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoTableViewCell
-        //todoCell.checkBox.isChecked = false //セル再利用に備えて、リセットする
-        
+        todoCell.delegate = self
 //        //cell選択時の背景色を変更する
 //        let selectedView = UIView()
 //        selectedView.backgroundColor = UIColor(hex: "757575")
 //        todoCell.selectedBackgroundView =  selectedView
+//        todoCell.selectedBackgroundView = createSelectedBackgroundView()
         
-        todoCell.delegate = self
-       // todoCell.selectedBackgroundView = createSelectedBackgroundView()
+        //cellのテキストビューのテキストを設定
+        let todoList = todoArray[indexPath.row]
+        todoCell.todoTextCell?.text = todoList.todoTitle
         
-        //変数の中身を作る
-        todoCell.todoTextCell?.text = todoArray[indexPath.row]
+        //セルのチェックマークを設定
+        if todoList.todoDone{
+            todoCell.checkBox.isChecked = true
+        }else{
+            todoCell.checkBox.isChecked = false
+        }
 
-        //戻り値の設定（表示する中身)
         return todoCell
     }
     
@@ -312,7 +319,7 @@ extension ViewController: SwipeTableViewCellDelegate {
             //左スワイプ
         else {
             let cell = self.uiTableView.cellForRow(at: indexPath) as! TodoTableViewCell
-            
+            let data: Data = NSKeyedArchiver.archivedData(withRootObject: todoArray)    //保存処理のため
             let flag = SwipeAction(style: .default, title: nil, handler: nil)
             flag.hidesWhenSelected = true
             configure(action: flag, with: .flag)
@@ -324,7 +331,7 @@ extension ViewController: SwipeTableViewCellDelegate {
                 cell.todoTextCell.textColor = UIColor.black,
                 
                 //userDefaultsの更新
-                self.userDefaults.set(self.todoArray, forKey: self.userDefaultsKey),
+                self.userDefaults.set(data, forKey: self.userDefaultsKey),
                 self.userDefaults.synchronize()
                 )
             }
@@ -381,5 +388,27 @@ extension ViewController: SwipeTableViewCellDelegate {
             action.font = .systemFont(ofSize: 13)
             action.transitionDelegate = ScaleTransition.default
         }
+    }
+}
+
+// チェックボックスの値を保存するために
+class todoListClass: NSObject, NSCoding {
+    var todoTitle: String?  // ToDoのタイトル
+    // ToDoを完了したかどうかを表すフラグ
+    var todoDone: Bool = false
+    // コンストラクタ
+    override init() {
+    }
+    
+    // NSCodingプロトコルに宣言されているデシリアライズ処理
+    required init?(coder aDecoder: NSCoder) {
+        todoTitle = aDecoder.decodeObject(forKey: "todoTitle") as? String
+        todoDone = aDecoder.decodeBool(forKey: "todoDone")
+    }
+    
+    // NSCodingプロトコルに宣言されているシリアライズ処理
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(todoTitle, forKey: "todoTitle")
+        aCoder.encode(todoDone, forKey: "todoDone")
     }
 }
