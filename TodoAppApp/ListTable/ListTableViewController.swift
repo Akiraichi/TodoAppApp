@@ -41,6 +41,9 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
                 listName.append(contentsOf: unarchiveTodlList)
             }
         }
+        //セルの高さを自動調整
+        listTableView.estimatedRowHeight = 10000 //セルの高さ
+        listTableView.rowHeight = UITableViewAutomaticDimension
         
         //長押しジェスチャーの追加
         longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ListTableViewController.longPressHandler(_:)))
@@ -176,6 +179,7 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
         cell.textLabel?.text = listTitle
         cell.listNameTitle = listTitle
         cell.textLabel?.font = UIFont(name: "System", size: 14) //Fontサイズを14に設定
+        cell.textLabel?.numberOfLines=0 //セルの複数行表示
         return cell
     }
     
