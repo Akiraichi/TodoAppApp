@@ -79,14 +79,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
 //        //imageを下に移動
 //        let transScale = CGAffineTransform(translationX: 0, y: 400)
 //        image.transform = transScale
-//
-//        //notificationの登録
-//        let center = NotificationCenter.default
-//        center.addObserver(self,
-//                           selector: #selector(self.update),
-//                           name: Notification.Name.UIApplicationWillTerminate,
-//                           object: nil)
-        
         //保存しているTodoの読み込み
         if let storedTodoList = userDefaults.object(forKey: userDefaultsKey) as? Data {
             if let unarchiveTodlList = NSKeyedUnarchiver.unarchiveObject(with: storedTodoList) as? [todoListClass] {
@@ -98,28 +90,18 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         uiTableView.keyboardDismissMode = .onDrag   //スクロールでキーボード下げる
         let notification = NotificationCenter.default   //デフォルトの通知センター
         //キーボードのフレームが変化
-        notification.addObserver(self, selector: #selector(ViewController.keyboardChangeFrame(_:)), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
+       // notification.addObserver(self, selector: #selector(ViewController.keyboardChangeFrame(_:)), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
         //キーボードが登場
-        notification.addObserver(self, selector: #selector(ViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        notification.addObserver(self, selector: #selector(ViewController.keyboardChangeFrame(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         //キーボードが退場
         notification.addObserver(self, selector: #selector(ViewController.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
-        
-        
     }
-    
-    //セルの自動調整のため
-    func textViewDidChange(_ textView: UITextView) {
-//        //indexpathを入手
-//        let cell = textView.superview?.superview as! TodoTableViewCell
-//        guard let indexPath = uiTableView.indexPath(for: cell) else {
-//            return
-//        }
-//        uiTableView.reloadRows(at: [indexPath], with: .fade)
-//        uiTableView.beginUpdates()
-//        uiTableView.endUpdates()
-
-    }
-    
+//    //セルの自動調整のため
+//    func textViewDidChange(_ textView: UITextView) {
+////        uiTableView.beginUpdates()
+////        uiTableView.endUpdates()
+//
+//    }
     
     //長押しで並べ替え
     @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
@@ -258,7 +240,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
     }
     
-    
     @IBAction func okTButtonTaped(_ sender: Any) {
         //textプロパティに値が存在するかチェック
         guard let inputText = todoText.text else{
@@ -280,11 +261,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //tableを再生成して、表示を更新
         self.uiTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.fade)
         todoText.text = ""  //フィールドを空にする
-    }
-    
-    //通知処理。ただし書きかけ
-    @objc func update(notification: NSNotification?){
-        print("notification_ON")
     }
     
     // MARK: - Table view data source
@@ -319,7 +295,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             todoCell.checkBox.isChecked = false
             todoCell.todoTextCell.textColor = UIColor.black
         }
-
         return todoCell
     }
     
@@ -328,8 +303,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //キーボードを閉じる。
         view.endEditing(true)
     }
-    
-    
     
     //キーボードによってテキストビューが隠れないようにする
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
@@ -360,16 +333,15 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             
         }
     }
-    //
-    @objc func keyboardWillShow(_ notification: Notification){
-        lastOffSetY = uiTableView.contentOffset.y   //現在のスクロール量を保存
-    }
     
-    //キーボードが隠れた
+//    @objc func keyboardWillShow(_ notification: Notification){
+//        lastOffSetY = uiTableView.contentOffset.y   //現在のスクロール量を保存
+//    }
+//    //キーボードが隠れた
     @objc func keyboardDidHide(_ notification: Notification){
-//        let baseline = ((contentView?.bounds.height)! - uiTableView.bounds.height)
-//        lastOffSetY = min(baseline, lastOffSetY)
-//        uiTableView.setContentOffset(CGPoint(x: 0, y: lastOffSetY), animated: true)
+        let baseline = ((contentView?.bounds.height)! - uiTableView.bounds.height)
+        lastOffSetY = min(baseline, lastOffSetY)
+        uiTableView.setContentOffset(CGPoint(x: 0, y: lastOffSetY), animated: true)
     }
     
     //テキストビューでreturn押したらキーボードとじる
