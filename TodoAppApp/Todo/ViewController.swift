@@ -21,7 +21,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     //letで宣言のみすることができなかったので冗長になっている。将来的に修正予定
     var longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPressHandler(_:)))
     
-    var defaultOptions = SwipeOptions() //右スワイプを許可する
+    var defaultOptions = SwipeOptions() //右スワイプ
+    var isSwipelight:Bool = false
     var isSwipeRightEnabled = true      //displayモードをimageモードにする
     var buttonDisplayMode: ButtonDisplayMode = .imageOnly
     var buttonStyle: ButtonStyle = .backgroundColor //imageButtonをcirculerにする
@@ -365,14 +366,28 @@ extension ViewController: SwipeTableViewCellDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         
         //右スワイプ
+        
         if orientation == .left {
             guard isSwipeRightEnabled else { return nil }
-            
-            let flag = SwipeAction(style: .default, title: nil, handler: nil)
+            let cell = self.uiTableView.cellForRow(at: indexPath) as! TodoTableViewCell
+            var data: Data?    //保存処理のため
+            let flag = SwipeAction(style: .default, title: nil){ action, indexPath in (
+                //todoArrayから削除
+                self.todoArray.remove(at: indexPath.row),
+                cell.checkBox.isChecked = false,
+                self.uiTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.bottom),   // セルを削除
+                cell.todoTextCell.textColor = UIColor.black,
+                data = NSKeyedArchiver.archivedData(withRootObject: self.todoArray),
+                //userDefaultsの更新
+                self.userDefaults.set(data, forKey: self.userDefaultsKey),
+                self.userDefaults.synchronize()
+                )}
             flag.hidesWhenSelected = true
             configure(action: flag, with: .flag)
-            
+            if cell.checkBox.isChecked{
             return [flag]
+            }
+            return nil
         }
             //左スワイプ
         else {
