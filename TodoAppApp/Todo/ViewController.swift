@@ -53,7 +53,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         longPressGesture.numberOfTapsRequired = 0
         longPressGesture.numberOfTouchesRequired = 1
         self.uiTableView.addGestureRecognizer(longPressGesture)
-        
+        uiTableView.estimatedRowHeight = 10000 //セルの高さ
+        uiTableView.rowHeight = UITableViewAutomaticDimension
 //        //イメージがフェードイン
 //        image.alpha = 0.0
 //        UIView.animate(withDuration: 2.0, delay: 1.0, options: [.curveEaseIn], animations: {
@@ -82,6 +83,12 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                 todoArray.append(contentsOf: unarchiveTodlList)
             }
         }
+    }
+    
+    //セルの自動調整のため
+    func textViewDidChange(_ textView: UITextView) {
+        uiTableView.beginUpdates()
+        uiTableView.endUpdates()
     }
     
     //長押しで並べ替え
