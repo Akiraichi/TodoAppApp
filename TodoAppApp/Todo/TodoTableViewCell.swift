@@ -61,8 +61,9 @@ class TodoTableViewCell: SwipeTableViewCell {
     
     @IBOutlet weak var todoTextCell: UITextView!
     @IBOutlet weak var checkBox: CheckBox!
-   // var strikeOn:Bool = false
+    @IBOutlet var content: UIView!
     
+   // var strikeOn:Bool = false
     
     @IBAction func checkBoxAct(_ sender: Any) {
         if !checkBox.isChecked{

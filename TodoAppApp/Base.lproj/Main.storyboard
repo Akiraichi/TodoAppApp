@@ -126,6 +126,7 @@
                                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="deviceRGB"/>
                                         <connections>
                                             <outlet property="checkBox" destination="iX5-FF-tra" id="Ufd-W7-dyy"/>
+                                            <outlet property="content" destination="bAf-8h-qd3" id="DSI-9Y-i1A"/>
                                             <outlet property="todoTextCell" destination="kxf-4w-fdl" id="VEX-8H-kxJ"/>
                                         </connections>
                                     </tableViewCell>

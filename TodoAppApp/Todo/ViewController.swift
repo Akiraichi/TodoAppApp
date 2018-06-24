@@ -27,6 +27,12 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     var buttonStyle: ButtonStyle = .backgroundColor //imageButtonをcirculerにする
     var usesTallCells = false   //cellの高さを通常にする
     
+    //scroll
+    var editingTextView:UITextView?
+    var overlap:CGFloat = 0.0
+    var lastOffSetY:CGFloat = 0.0
+    var contentView: UIView?
+    
     //penguin_imageを入れるイメージビュー
     //@IBOutlet weak var image: UIImageView!
     
@@ -83,6 +89,18 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                 todoArray.append(contentsOf: unarchiveTodlList)
             }
         }
+        
+        //スクロール設定
+        uiTableView.keyboardDismissMode = .onDrag   //スクロールでキーボード下げる
+        let notification = NotificationCenter.default   //デフォルトの通知センター
+        //キーボードのフレームが変化
+        notification.addObserver(self, selector: #selector(ViewController.keyboardChangeFrame(_:)), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
+        //キーボードが登場
+        notification.addObserver(self, selector: #selector(ViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        //キーボードが退場
+        //notification.addObserver(self, selector: #selector(ViewController.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        
+        
     }
     
     //セルの自動調整のため
@@ -298,10 +316,46 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //キーボードを閉じる。
         view.endEditing(true)
     }
-    
-    func textViewDidBeginEditing(_ textField: UITextView) {
+    //キーボードによってテキストビューが隠れないようにする
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        editingTextView = textView  //編集中のテキストビュー
+        let cell = textView.superview?.superview as! TodoTableViewCell
+        contentView = cell.content
+        return true
     }
-
+    
+    // キーボードのframeが変化した
+    @objc func keyboardChangeFrame(_ notification: Notification) {
+        // 編集中のテキストフィールドがない場合は中断する
+        guard let fld = editingTextView else {
+            return
+        }
+        // キーボードのframeを調べる
+        let userInfo = (notification as NSNotification).userInfo!
+        let keybordFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        // テキストフィールドのframeはキーボードと同じ座標系
+        let fldFrame = view.convert(fld.frame, from: contentView)
+        // 編集中のテキストフィールドがキーボードと重なっていないか調べる
+        overlap =  fldFrame.maxY - keybordFrame.minY + 5
+        if overlap>0 {
+            // キーボードで隠れている分だけスクロールする
+            overlap += uiTableView.contentOffset.y
+            uiTableView.setContentOffset(CGPoint(x: 0, y: overlap), animated: true)
+            
+        }
+    }
+    //
+    @objc func keyboardWillShow(_ notification: Notification){
+        lastOffSetY = uiTableView.contentOffset.y   //現在のスクロール量を保存
+    }
+    
+//    //キーボードが隠れた
+//    @objc func keyboardDidHide(_ notification: Notification){
+//        let baseline = ((contentView?.bounds.height)! - uiTableView.bounds.height)
+//        lastOffSetY = min(baseline, lastOffSetY)
+//        uiTableView.setContentOffset(CGPoint(x: 0, y: lastOffSetY), animated: true)
+//    }
+    
     //テキストビューでreturn押したらキーボードとじる
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
@@ -312,6 +366,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        editingTextView = nil
         //textプロパティに値が存在するかチェック
         guard let inputText = textView.text else{
             return
@@ -335,6 +390,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         let data = NSKeyedArchiver.archivedData(withRootObject: todoArray)
         userDefaults.set(data, forKey: userDefaultsKey)
         userDefaults.synchronize()
+        
+        editingTextView = nil   //編集中のテキストはなし
     }
     
     
