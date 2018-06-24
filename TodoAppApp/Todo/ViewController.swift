@@ -88,7 +88,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     func textViewDidChange(_ textView: UITextView) {
         uiTableView.beginUpdates()
         uiTableView.endUpdates()
-
     }
     
     //長押しで並べ替え
@@ -378,7 +377,7 @@ extension ViewController: SwipeTableViewCellDelegate {
             //左スワイプ
         else {
             let cell = self.uiTableView.cellForRow(at: indexPath) as! TodoTableViewCell
-            let data: Data = NSKeyedArchiver.archivedData(withRootObject: todoArray)    //保存処理のため
+            var data: Data?    //保存処理のため
             let flag = SwipeAction(style: .default, title: nil, handler: nil)
             flag.hidesWhenSelected = true
             configure(action: flag, with: .flag)
@@ -388,7 +387,7 @@ extension ViewController: SwipeTableViewCellDelegate {
                 self.todoArray.remove(at: indexPath.row),
                 cell.checkBox.isChecked = false,
                 cell.todoTextCell.textColor = UIColor.black,
-                
+                data = NSKeyedArchiver.archivedData(withRootObject: self.todoArray),
                 //userDefaultsの更新
                 self.userDefaults.set(data, forKey: self.userDefaultsKey),
                 self.userDefaults.synchronize()
