@@ -27,12 +27,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     var buttonStyle: ButtonStyle = .backgroundColor //imageButtonをcirculerにする
     var usesTallCells = false   //cellの高さを通常にする
     
-    //scroll
-    var editingTextView:UITextView?
-    var overlap:CGFloat = 0.0
-    var lastOffSetY:CGFloat = 0.0
-    var contentView: UIView?
-    var isTextEditing: Bool?
+    
     
     //penguin_imageを入れるイメージビュー
     //@IBOutlet weak var image: UIImageView!
@@ -51,7 +46,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         todoText.delegate=self  //todoTextnoデリゲイトはself
         
         //テーブルビューの一番下に余白をつける
-        uiTableView.contentInset.bottom = 50
+        uiTableView.contentInset.bottom = 300
         
         //スワイプのための設定
         uiTableView.allowsSelection = true
@@ -63,7 +58,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         longPressGesture.numberOfTapsRequired = 0
         longPressGesture.numberOfTouchesRequired = 1
         self.uiTableView.addGestureRecognizer(longPressGesture)
-        uiTableView.estimatedRowHeight = 10000 //セルの高さ
+        uiTableView.estimatedRowHeight = 100 //セルの高さ
         uiTableView.rowHeight = UITableViewAutomaticDimension
 //        //イメージがフェードイン
 //        image.alpha = 0.0
@@ -87,21 +82,14 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
         
         //スクロール設定
-        uiTableView.keyboardDismissMode = .onDrag   //スクロールでキーボード下げる
-        let notification = NotificationCenter.default   //デフォルトの通知センター
-        //キーボードのフレームが変化
-       // notification.addObserver(self, selector: #selector(ViewController.keyboardChangeFrame(_:)), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
-        //キーボードが登場
-        notification.addObserver(self, selector: #selector(ViewController.keyboardChangeFrame(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        //キーボードが退場
-        notification.addObserver(self, selector: #selector(ViewController.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        //uiTableView.keyboardDismissMode = .onDrag   //スクロールでキーボード下げる
     }
-//    //セルの自動調整のため
-//    func textViewDidChange(_ textView: UITextView) {
-////        uiTableView.beginUpdates()
-////        uiTableView.endUpdates()
-//
-//    }
+    //セルの自動調整のため
+    func textViewDidChange(_ textView: UITextView) {
+        uiTableView.beginUpdates()
+        uiTableView.endUpdates()
+
+    }
     
     //長押しで並べ替え
     @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
@@ -304,46 +292,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         view.endEditing(true)
     }
     
-    //キーボードによってテキストビューが隠れないようにする
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        editingTextView = textView  //編集中のテキストビュー
-        let cell = textView.superview?.superview as! TodoTableViewCell
-        contentView = cell.content
-        return true
-    }
-    
-    // キーボードのframeが変化した
-    @objc func keyboardChangeFrame(_ notification: Notification) {
-        // 編集中のテキストフィールドがない場合は中断する
-        guard let fld = editingTextView else {
-            return
-        }
-        // キーボードのframeを調べる
-        let userInfo = (notification as NSNotification).userInfo!
-        let keybordFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        // テキストフィールドのframeはキーボードと同じ座標系
-        let fldFrame = view.convert(fld.frame, from: contentView)
-        // 編集中のテキストフィールドがキーボードと重なっていないか調べる
-        overlap =  fldFrame.maxY - keybordFrame.minY + 5
-        if overlap>0 {
-            // キーボードで隠れている分だけスクロールする
-            overlap += uiTableView.contentOffset.y
-            uiTableView.setContentOffset(CGPoint(x: 0, y: overlap), animated: true)
-            
-            
-        }
-    }
-    
-//    @objc func keyboardWillShow(_ notification: Notification){
-//        lastOffSetY = uiTableView.contentOffset.y   //現在のスクロール量を保存
-//    }
-//    //キーボードが隠れた
-    @objc func keyboardDidHide(_ notification: Notification){
-        let baseline = ((contentView?.bounds.height)! - uiTableView.bounds.height)
-        lastOffSetY = min(baseline, lastOffSetY)
-        uiTableView.setContentOffset(CGPoint(x: 0, y: lastOffSetY), animated: true)
-    }
-    
+   
     //テキストビューでreturn押したらキーボードとじる
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         //editingTextView = textView
@@ -380,8 +329,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         userDefaults.set(data, forKey: userDefaultsKey)
         userDefaults.synchronize()
         
-        uiTableView.reloadRows(at: [indexPath], with: .fade)
-        editingTextView = nil   //編集中のテキストはなし
+        //uiTableView.reloadRows(at: [indexPath], with: .fade)
     }
     
     
