@@ -32,6 +32,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     var overlap:CGFloat = 0.0
     var lastOffSetY:CGFloat = 0.0
     var contentView: UIView?
+    var isTextEditing: Bool?
     
     //penguin_imageを入れるイメージビュー
     //@IBOutlet weak var image: UIImageView!
@@ -48,6 +49,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         self.uiTableView.delegate=self
         self.uiTableView.dataSource=self
         todoText.delegate=self  //todoTextnoデリゲイトはself
+        
+        //テーブルビューの一番下に余白をつける
+        uiTableView.contentInset.bottom = 50
         
         //スワイプのための設定
         uiTableView.allowsSelection = true
@@ -98,16 +102,24 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //キーボードが登場
         notification.addObserver(self, selector: #selector(ViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         //キーボードが退場
-        //notification.addObserver(self, selector: #selector(ViewController.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        notification.addObserver(self, selector: #selector(ViewController.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         
         
     }
     
     //セルの自動調整のため
     func textViewDidChange(_ textView: UITextView) {
-        uiTableView.beginUpdates()
-        uiTableView.endUpdates()
+//        //indexpathを入手
+//        let cell = textView.superview?.superview as! TodoTableViewCell
+//        guard let indexPath = uiTableView.indexPath(for: cell) else {
+//            return
+//        }
+//        uiTableView.reloadRows(at: [indexPath], with: .fade)
+//        uiTableView.beginUpdates()
+//        uiTableView.endUpdates()
+
     }
+    
     
     //長押しで並べ替え
     @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
@@ -316,6 +328,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //キーボードを閉じる。
         view.endEditing(true)
     }
+    
+    
+    
     //キーボードによってテキストビューが隠れないようにする
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         editingTextView = textView  //編集中のテキストビュー
@@ -342,6 +357,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             overlap += uiTableView.contentOffset.y
             uiTableView.setContentOffset(CGPoint(x: 0, y: overlap), animated: true)
             
+            
         }
     }
     //
@@ -349,15 +365,16 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         lastOffSetY = uiTableView.contentOffset.y   //現在のスクロール量を保存
     }
     
-//    //キーボードが隠れた
-//    @objc func keyboardDidHide(_ notification: Notification){
+    //キーボードが隠れた
+    @objc func keyboardDidHide(_ notification: Notification){
 //        let baseline = ((contentView?.bounds.height)! - uiTableView.bounds.height)
 //        lastOffSetY = min(baseline, lastOffSetY)
 //        uiTableView.setContentOffset(CGPoint(x: 0, y: lastOffSetY), animated: true)
-//    }
+    }
     
     //テキストビューでreturn押したらキーボードとじる
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        //editingTextView = textView
         if (text == "\n") {
             view.endEditing(true)
             return false
@@ -366,7 +383,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        editingTextView = nil
         //textプロパティに値が存在するかチェック
         guard let inputText = textView.text else{
             return
@@ -381,6 +397,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         guard let indexPath = uiTableView.indexPath(for: cell) else {
             return
         }
+        
         //textを更新
         let todoList = todoArray[indexPath.row]
         todoList.todoTitle = inputText
@@ -391,6 +408,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         userDefaults.set(data, forKey: userDefaultsKey)
         userDefaults.synchronize()
         
+        uiTableView.reloadRows(at: [indexPath], with: .fade)
         editingTextView = nil   //編集中のテキストはなし
     }
     

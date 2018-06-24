@@ -117,7 +117,7 @@
                                             <constraints>
                                                 <constraint firstItem="kxf-4w-fdl" firstAttribute="top" secondItem="bAf-8h-qd3" secondAttribute="top" constant="11" id="1dP-Jb-hz2"/>
                                                 <constraint firstItem="iX5-FF-tra" firstAttribute="centerY" secondItem="bAf-8h-qd3" secondAttribute="centerY" id="4i0-YF-EkD"/>
-                                                <constraint firstAttribute="trailing" secondItem="kxf-4w-fdl" secondAttribute="trailing" constant="15" id="RQo-eT-cEC"/>
+                                                <constraint firstItem="kxf-4w-fdl" firstAttribute="trailing" secondItem="bAf-8h-qd3" secondAttribute="trailing" constant="-15" id="RQo-eT-cEC"/>
                                                 <constraint firstItem="iX5-FF-tra" firstAttribute="leading" secondItem="bAf-8h-qd3" secondAttribute="leadingMargin" id="kBL-rY-k0Q"/>
                                                 <constraint firstItem="kxf-4w-fdl" firstAttribute="bottom" secondItem="bAf-8h-qd3" secondAttribute="bottom" constant="-11" id="m5T-EK-itT"/>
                                                 <constraint firstItem="kxf-4w-fdl" firstAttribute="leading" secondItem="iX5-FF-tra" secondAttribute="trailing" constant="28" id="tby-xg-96M"/>
