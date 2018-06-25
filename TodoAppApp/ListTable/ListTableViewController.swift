@@ -86,8 +86,8 @@ class ListTableViewController: UITableViewController, UITextFieldDelegate {
             if let viewController = segue.destination as? ViewController{
                 viewController.userDefaultsKey = cell.listNameTitle
             }
-            //遷移先のbarBottunのテキストをリスト名に変更
-            let backButtonItem = UIBarButtonItem(title: cell.listNameTitle, style: .plain, target: nil, action: nil)
+            //遷移先のbarBottunのテキストをなsくす
+            let backButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
             navigationItem.backBarButtonItem = backButtonItem
         }
     }

@@ -21,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage()
         //Nvigationバーのテキストカラーを白色に変更
         UINavigationBar.appearance().tintColor = UIColor.white
+        //ナビゲーションのタイトル文字列の色を変更
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
         //ナビゲーションバーの背景を変更
         UINavigationBar.appearance().barTintColor = UIColor(hex:"79BD9A")
         

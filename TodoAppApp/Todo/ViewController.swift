@@ -28,6 +28,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     var buttonStyle: ButtonStyle = .backgroundColor //imageButtonをcirculerにする
     var usesTallCells = false   //cellの高さを通常にする
     
+    var finishList:Bool = false//達成済みリストかどうか
     
     
     //penguin_imageを入れるイメージビュー
@@ -37,6 +38,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     fileprivate var todoArray = [todoListClass]()  //動的並べ替えのため, Todoを格納した配列
     
+    
     let userDefaults = UserDefaults.standard
     var userDefaultsKey: String = ""    //UDのキーを設定するための変数
     
@@ -45,6 +47,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         self.uiTableView.delegate=self
         self.uiTableView.dataSource=self
         todoText.delegate=self  //todoTextnoデリゲイトはself
+        
+        // ナビゲーションバーのタイトルにリスト名を表示
+        self.navigationItem.title = userDefaultsKey
         
         //テーブルビューの一番下に余白をつける
         uiTableView.contentInset.bottom = 300
@@ -90,6 +95,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         uiTableView.beginUpdates()
         uiTableView.endUpdates()
     }
+    
+
     
     //長押しで並べ替え
     @objc func longPressHandler(_ sender: UILongPressGestureRecognizer){
@@ -272,6 +279,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
 //        todoCell.selectedBackgroundView = createSelectedBackgroundView()
         
         //cellのテキストビューのテキストを設定
+        
         let todoList = todoArray[indexPath.row]
         todoCell.todoTextCell?.text = todoList.todoTitle
         
@@ -283,7 +291,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             todoCell.checkBox.isChecked = false
             todoCell.todoTextCell.textColor = UIColor.black
         }
-        return todoCell
+        
+            //普通のリスト
+            return todoCell
     }
     
     //singleタップ時のアクション
@@ -347,6 +357,12 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         return false
     }
     
+    // セルが編集可能であるかどうかを返却する
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        
+        return true
+    }
+   
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -371,20 +387,19 @@ extension ViewController: SwipeTableViewCellDelegate {
             guard isSwipeRightEnabled else { return nil }
             let cell = self.uiTableView.cellForRow(at: indexPath) as! TodoTableViewCell
             var data: Data?    //保存処理のため
-            let flag = SwipeAction(style: .default, title: nil){ action, indexPath in (
-                //todoArrayから削除
-                self.todoArray.remove(at: indexPath.row),
-                cell.checkBox.isChecked = false,
-                self.uiTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.bottom),   // セルを削除
-                cell.todoTextCell.textColor = UIColor.black,
-                data = NSKeyedArchiver.archivedData(withRootObject: self.todoArray),
+            let todoList = todoArray[indexPath.row]
+            var flag = SwipeAction(style: .default, title: nil){ action, indexPath in (
+                cell.checkBox.isChecked = true,
+                cell.todoTextCell.textColor = UIColor(hex: "000000", alpha: 0.3),
+                todoList.todoDone = true,
                 //userDefaultsの更新
+                data = NSKeyedArchiver.archivedData(withRootObject: self.todoArray),
                 self.userDefaults.set(data, forKey: self.userDefaultsKey),
                 self.userDefaults.synchronize()
                 )}
             flag.hidesWhenSelected = true
             configure(action: flag, with: .flag)
-            if cell.checkBox.isChecked{
+            if !cell.checkBox.isChecked{
             return [flag]
             }
             return nil
@@ -433,6 +448,7 @@ extension ViewController: SwipeTableViewCellDelegate {
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
         var options = SwipeOptions()
         options.expansionStyle = orientation == .left ? .selection : .destructive
+        
         options.transitionStyle = defaultOptions.transitionStyle
         options.backgroundColor = UIColor(hex: "FAF3EB")
         //イメージの最大幅を設定
@@ -469,6 +485,7 @@ class todoListClass: NSObject, NSCoding {
     var todoTitle: String?  // ToDoのタイトル
     // ToDoを完了したかどうかを表すフラグ
     var todoDone: Bool = false
+    var todoFinish: Bool = false
     // コンストラクタ
     override init() {
     }
